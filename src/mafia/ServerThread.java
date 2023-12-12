@@ -47,6 +47,7 @@ class ServerThread extends Thread {
         if(msg[1].equals("gameStart")){
           Server.startGame();
         }
+
       } catch (IOException e) {
         e.printStackTrace();
         break;

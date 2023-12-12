@@ -18,7 +18,8 @@ public class Server {
 
   static void startGame(){
     isStart = true;
-    new Game(list);
+    Game game = new Game(list);
+    game.start();
   }
 
   public static void main(String[] args) throws IOException {
