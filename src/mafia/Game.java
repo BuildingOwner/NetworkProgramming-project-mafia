@@ -20,7 +20,7 @@ public class Game extends Thread {
     Random rand = new Random();
     for (int i = 0; i < serverThreads.size(); i++) {
       int num = 0;
-      while (jobCount[num]<=0){
+      while (jobCount[num] <= 0) {
         num = rand.nextInt(3);
       }
       jobCount[num]--;
@@ -28,59 +28,69 @@ public class Game extends Thread {
     }
   }
 
-   public void run(){
+  public void run() {
     timer();
-    while (gameFlag){
+    notice("", "member");
+    while (gameFlag) {
       checkFinish();
-      if(dayNight == DayNight.DAY){
+      if (dayNight == DayNight.DAY) {
 
       }
     }
   }
 
-  private void timer(){
+  private void timer() {
     Timer timer = new Timer();
-    timer.schedule(new TimerTask(){
+    timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        switch(dayNight) {
+        switch (dayNight) {
           case DAY:
             dayNight = DayNight.NIGHT;
-            notice("now Day");
+            notice("now Day", "chat");
             break;
           case NIGHT:
             dayNight = DayNight.DAY;
-            notice("now Night");
+            notice("now Night", "chat");
             break;
         }
       }
     }, 0, 30000);
   }
 
-  private void checkFinish(){
+  private void checkFinish() {
     int citizen = 0;
     int enemy = 0;
-    for(User u : users){
-      if(u.jab.equals("시민") || u.jab.equals("의사")){
+    for (User u : users) {
+      if (u.jab.equals("시민") || u.jab.equals("의사")) {
         citizen++;
-      }
-      else {
+      } else {
         enemy++;
       }
     }
-    if(enemy == 0){
+    if (enemy == 0) {
       gameFlag = false;
-      notice("citizen win");
+      notice("citizen win", "chat");
     } else if (citizen <= enemy) {
       gameFlag = false;
-      notice("enemy win");
+      notice("enemy win", "chat");
     }
   }
 
-  private void notice(String str){
-    for(ServerThread s : serverThreads){
+  private void notice(String str, String method) {
+    StringBuilder names = new StringBuilder();
+    if(method.equals("member")){
+      for(ServerThread s : serverThreads){
+        names.append(s.name).append(" ");
+      }
+    }
+    for (ServerThread s : serverThreads) {
       try {
-        s.os.writeUTF("chat/Server : " + str);
+        if (method.equals("chat")) {
+          s.os.writeUTF("chat/Server : " + str);
+        } else if (method.equals("member")) {
+          s.os.writeUTF("member/" + names.toString());
+        }
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

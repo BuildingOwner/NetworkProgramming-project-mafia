@@ -33,7 +33,10 @@ public class GameChat {
             String[] msg = message.split("/");
 
             if (msg[0].equals("chat")) {
-              gp.textArea.append(new String(msg[1]) + "\n");
+              gp.chatArea.append(new String(msg[1]) + "\n");
+            }
+            if (msg[0].equals("member")) {
+              gp.member.setText(new String(msg[1]));
             }
           } catch (IOException e) {
             e.printStackTrace();
