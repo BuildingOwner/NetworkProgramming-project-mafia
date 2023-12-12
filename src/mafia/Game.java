@@ -24,7 +24,9 @@ public class Game extends Thread {
         num = rand.nextInt(3);
       }
       jobCount[num]--;
-      users.add(new User(serverThreads.get(i).name, jobs[num]));
+      User u = new User(serverThreads.get(i).name, jobs[num]);
+      users.add(u);
+      noticePersonal(serverThreads.get(i), "당신의 직업은 " + u.jab + "입니다.");
     }
   }
 
@@ -79,21 +81,29 @@ public class Game extends Thread {
 
   private void notice(String str, String method) {
     StringBuilder names = new StringBuilder();
-    if(method.equals("member")){
-      for(ServerThread s : serverThreads){
+    if (method.equals("member")) {
+      for (ServerThread s : serverThreads) {
         names.append(s.name).append(" ");
       }
     }
     for (ServerThread s : serverThreads) {
       try {
         if (method.equals("chat")) {
-          s.os.writeUTF("chat/Server : " + str);
+          s.os.writeUTF("chat/사회자 : " + str);
         } else if (method.equals("member")) {
           s.os.writeUTF("member/" + names.toString());
         }
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
+    }
+  }
+
+  private void noticePersonal(ServerThread s, String str) {
+    try {
+      s.os.writeUTF("chat/" + str);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 }
