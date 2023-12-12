@@ -35,10 +35,6 @@ public class GameChat {
             if (msg[0].equals("chat")) {
               gp.textArea.append(new String(msg[1]) + "\n");
             }
-
-            if(msg[0].equals("gameStart")){
-
-            }
           } catch (IOException e) {
             e.printStackTrace();
           }
