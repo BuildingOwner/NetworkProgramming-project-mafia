@@ -40,6 +40,12 @@ public class GamePanel extends JPanel {
       }
     });
 
+    String[] processingTag = gameChat.name.split("#");
+    String tag = processingTag[processingTag.length - 1];
+    if(!tag.equals("1")){
+      startBtn.setEnabled(false);
+    }
+
     JLabel votelable = new JLabel("투표");
     votelable.setFont(new Font("굴림", Font.PLAIN, 30));
     votelable.setBounds(57, 774, 73, 53);
