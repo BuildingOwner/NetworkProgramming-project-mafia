@@ -83,7 +83,7 @@ public class Game extends Thread {
     StringBuilder names = new StringBuilder();
     if (method.equals("member")) {
       for (ServerThread s : serverThreads) {
-        names.append(s.name).append(" ");
+        names.append("[").append(s.name).append("] ");
       }
     }
     for (ServerThread s : serverThreads) {
