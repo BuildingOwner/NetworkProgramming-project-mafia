@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 class ServerThread extends Thread {
@@ -13,6 +14,7 @@ class ServerThread extends Thread {
   final DataOutputStream os;
   Socket s;
   boolean active;
+  private List<User> users;
 
   public ServerThread(Socket s, String name, DataInputStream is, DataOutputStream os) {
     this.is = is;
@@ -32,7 +34,7 @@ class ServerThread extends Thread {
     String message;
     while (true) {
       try {
-        message = is.readUTF();
+        message = is.readUTF(); // 이름/메소드/내용 형식
         System.out.println(message);
         String[] msg = message.split("/");
         if (msg[1].equals("logout")) {
@@ -44,13 +46,25 @@ class ServerThread extends Thread {
         if (msg[1].equals("chat")) {
           for (ServerThread t : Server.list) {
             if (!t.name.equals(msg[0])) {
-              t.os.writeUTF("chat/" + this.name + " : " + msg[2]);
+              if(msg[3].equals("death")){
+                for(User u : users){
+                  if(!u.isDead){
+                    t.os.writeUTF("chat/" + this.name + " (사망자) : " + msg[2]);
+                  }
+                }
+              }else {
+                t.os.writeUTF("chat/" + this.name + " (생존자) : " + msg[2]);
+              }
             }
           }
         }
 
         if(msg[1].equals("gameStart")){
           Server.startGame();
+        }
+
+        if(msg[1].equals("vote")){
+          Server.game.voting(msg[0], msg[2]);
         }
 
       } catch (IOException e) {
@@ -64,5 +78,9 @@ class ServerThread extends Thread {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void getUser(List<User> users){
+    this.users = users;
   }
 }

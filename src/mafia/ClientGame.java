@@ -7,13 +7,17 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class GameChat {
+public class ClientGame {
   private final static int ServerPort = 5000;
   public DataInputStream is;
   public DataOutputStream os;
   public String name;
+  public DayNight now;
+  public GamePanel gp;
+  public Boolean gameFlag = false;
+  public Boolean isDead = false;
 
-  public GameChat(JFrame frame, String name) throws IOException {
+  public ClientGame(JFrame frame, String name) throws IOException {
     this.name = name;
     InetAddress ip = InetAddress.getByName("localhost");
     Socket s = new Socket(ip, ServerPort);
@@ -27,32 +31,21 @@ public class GameChat {
       this.name = msg[1];
     }
 
-    GamePanel gp = new GamePanel(frame, this);
+    gp = new GamePanel(frame, this);
 
-    Thread thread2 = new Thread(new Runnable() {
-
-      @Override
-      public void run() {
-        while (true) {
-          try {
-            String message = is.readUTF();
-            String[] msg = message.split("/");
-
-            if (msg[0].equals("chat")) {
-              gp.chatArea.append(new String(msg[1]) + "\n");
-            }
-            if (msg[0].equals("member")) {
-              gp.member.setText(new String(msg[1]));
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    });
-    thread2.start();
+    ClientGameChat cgt = new ClientGameChat(this);
+    cgt.start();
 
     Client.switchPanel(frame, gp);
+  }
+
+  public void startGame() {
+    new Thread(() -> {
+      while (gameFlag) {
+        gp.chat.setEnabled(now == DayNight.DAY);
+        gp.vote.setEnabled(!isDead && now == DayNight.VOTE);
+      }
+    }).start();
   }
 
   public void sendMessage(String s) {

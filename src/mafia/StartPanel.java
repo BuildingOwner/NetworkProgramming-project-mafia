@@ -41,7 +41,7 @@ public class StartPanel extends JPanel {
         }
         else {
           try {
-            new GameChat(frame, name);
+            new ClientGame(frame, name);
           } catch (IOException ex) {
             throw new RuntimeException(ex);
           }

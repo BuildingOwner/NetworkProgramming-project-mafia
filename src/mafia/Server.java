@@ -16,10 +16,11 @@ public class Server {
   static DataOutputStream os;
   static Boolean isStart = false;
   static int counter = 0;
+  static Game game;
 
   static void startGame(){
     isStart = true;
-    Game game = new Game(list);
+    game = new Game(list);
     game.start();
   }
 

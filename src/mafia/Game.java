@@ -10,10 +10,28 @@ public class Game extends Thread {
   private List<User> users = new ArrayList<>();
   private DayNight dayNight = DayNight.NIGHT;
   private Boolean gameFlag = true;
+  private String[] vote;
 
   public Game(ArrayList<ServerThread> list) {
     this.serverThreads = list;
     init();
+  }
+
+  public void voting(String voter, String pick){
+    int index = 12345;
+    for(int i=0; i<users.size(); i++){
+      if(users.get(i).name.equals(voter)){
+        index = i;
+      }
+    }
+
+    if(users.get(index).isDead){
+      noticePersonal(serverThreads.get(index), "개인 : 당신은 죽어서 투표를 못합니다 ㅠㅠ");
+      return;
+    }
+
+    vote[index] = pick;
+    noticePersonal(serverThreads.get(index), "개인 : 당신은 " + vote[index] + "에게 투표했습니다.");
   }
 
   public void init() {
@@ -26,15 +44,18 @@ public class Game extends Thread {
       jobCount[num]--;
       User u = new User(serverThreads.get(i).name, jobs[num]);
       users.add(u);
-      noticePersonal(serverThreads.get(i), "당신의 직업은 " + u.jab + "입니다.");
+      noticePersonal(serverThreads.get(i), "개인 : 당신의 직업은 " + u.jab + "입니다.");
     }
+
+    vote = new String[serverThreads.size()];
   }
 
   public void run() {
     timer();
     notice("", "member");
+    notice("true", "isGameRun");
     while (gameFlag) {
-      checkFinish();
+//      checkFinish();
       if (dayNight == DayNight.DAY) {
 
       }
@@ -48,12 +69,19 @@ public class Game extends Thread {
       public void run() {
         switch (dayNight) {
           case DAY:
+            dayNight = DayNight.VOTE;
+            notice("now Vote", "chat");
+            notice("vote", "dayNight");
+            break;
+          case VOTE:
             dayNight = DayNight.NIGHT;
-            notice("now Day", "chat");
+            notice("now Night", "chat");
+            notice("night", "dayNight");
             break;
           case NIGHT:
             dayNight = DayNight.DAY;
-            notice("now Night", "chat");
+            notice("now Day", "chat");
+            notice("day", "dayNight");
             break;
         }
       }
@@ -73,9 +101,11 @@ public class Game extends Thread {
     if (enemy == 0) {
       gameFlag = false;
       notice("citizen win", "chat");
+      notice("false", "isGameRun");
     } else if (citizen <= enemy) {
       gameFlag = false;
       notice("enemy win", "chat");
+      notice("false", "isGameRun");
     }
   }
 
@@ -89,9 +119,19 @@ public class Game extends Thread {
     for (ServerThread s : serverThreads) {
       try {
         if (method.equals("chat")) {
-          s.os.writeUTF("chat/사회자 : " + str);
-        } else if (method.equals("member")) {
+          s.os.writeUTF("chat/전체 : " + str);
+        }
+
+        if (method.equals("member")) {
           s.os.writeUTF("member/" + names.toString());
+        }
+
+        if(method.equals("dayNight")){
+          s.os.writeUTF("dayNight/" + str);
+        }
+
+        if(method.equals("isGameRun")){
+          s.os.writeUTF("isGameRun/" + str);
         }
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -106,4 +146,5 @@ public class Game extends Thread {
       throw new RuntimeException(e);
     }
   }
+
 }

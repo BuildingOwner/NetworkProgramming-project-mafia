@@ -1,5 +1,5 @@
 package mafia;
 
 public enum DayNight {
-  DAY, NIGHT;
+  DAY, NIGHT, VOTE;
 }
