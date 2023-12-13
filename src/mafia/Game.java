@@ -5,8 +5,8 @@ import java.util.*;
 
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
-  private String[] jobs = {"시민", "마피아", "의사"};
-  private int[] jobCount = {1, 1, 1};
+  private String[] jobs = {"시민", "시민2","마피아","마피아2", "의사","경찰"}; //역할 추가 H
+  private int[] jobCount = {1, 1, 1, 1, 1, 1, 1}; //7개 H
   private List<User> users = new ArrayList<>();
   private DayNight dayNight = DayNight.NIGHT;
   private Boolean gameFlag = true;
@@ -21,7 +21,7 @@ public class Game extends Thread {
     for (int i = 0; i < serverThreads.size(); i++) {
       int num = 0;
       while (jobCount[num] <= 0) {
-        num = rand.nextInt(3);
+        num = rand.nextInt(7); //7로 변경 H
       }
       jobCount[num]--;
       User u = new User(serverThreads.get(i).name, jobs[num]);
