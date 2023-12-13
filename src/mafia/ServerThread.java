@@ -20,6 +20,11 @@ class ServerThread extends Thread {
     this.name = name;
     this.s = s;
     this.active = true;
+    try {
+      os.writeUTF("name/"+name);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

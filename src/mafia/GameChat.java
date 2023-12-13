@@ -21,10 +21,16 @@ public class GameChat {
     os = new DataOutputStream(s.getOutputStream());
 
     os.writeUTF(name);
+    String message = is.readUTF();
+    String[] msg = message.split("/");
+    if (msg[0].equals("name")) {
+      this.name = msg[1];
+    }
 
     GamePanel gp = new GamePanel(frame, this);
 
     Thread thread2 = new Thread(new Runnable() {
+
       @Override
       public void run() {
         while (true) {
