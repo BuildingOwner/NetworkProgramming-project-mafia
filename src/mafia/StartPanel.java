@@ -8,18 +8,24 @@ import java.io.IOException;
 
 public class StartPanel extends JPanel {
   private JTextField userName;
+
   public StartPanel(JFrame frame) {
     setBounds(100, 100, 1109, 969);
     this.setLayout(null);
 
-    JLabel title = new JLabel("마피아 게임");
-    title.setFont(new Font("굴림", Font.BOLD, 60));
-    title.setBounds(379, 199, 329, 85);
-    this.add(title);
+    // Set the background color to black
+    this.setBackground(Color.BLACK);
+
+//    JLabel title = new JLabel("마피아 게임");
+//    title.setFont(new Font("굴림", Font.BOLD, 60));
+//    title.setBounds(379, 199, 329, 85);
+//    title.setForeground(Color.WHITE); // Set text color to white
+//    this.add(title);
 
     JLabel label = new JLabel("이름을 입력해 주세요.");
     label.setFont(new Font("굴림", Font.PLAIN, 30));
     label.setBounds(388, 405, 306, 59);
+    label.setForeground(Color.WHITE); // Set text color to white
     this.add(label);
 
     userName = new JTextField();
@@ -36,10 +42,9 @@ public class StartPanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String name = userName.getText();
-        if(name == null || name.trim().isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
           JOptionPane.showMessageDialog(frame, "이름을 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+        } else {
           try {
             new GameChat(frame, name);
           } catch (IOException ex) {
@@ -60,6 +65,15 @@ public class StartPanel extends JPanel {
         frame.dispose();
       }
     });
-  }
 
+    // Add the image in the center
+    ImageIcon imageIcon = new ImageIcon("src/mafia/image/logo.png");
+    Image image = imageIcon.getImage();
+    Image newImage = image.getScaledInstance(500, 300, Image.SCALE_SMOOTH);
+    imageIcon = new ImageIcon(newImage);
+
+    JLabel imageLabel = new JLabel(imageIcon);
+    imageLabel.setBounds(304, 50, 500, 300);
+    this.add(imageLabel);
+  }
 }
