@@ -11,7 +11,7 @@ public class StartPanel extends JPanel {
   public StartPanel(JFrame frame) {
     setBounds(100, 100, 1109, 969);
     this.setLayout(null);
-    this.setBackground(Color.BLACK);
+    this.setBackground(Color.BLACK); //배경색 검정
 
     JLabel nameLabel = new JLabel("이름을 입력해 주세요");
     nameLabel.setFont(new Font("굴림", Font.PLAIN, 30));
@@ -24,6 +24,7 @@ public class StartPanel extends JPanel {
     this.add(userName);
     userName.setColumns(10);
 
+    //게임 시작
     final ImageIcon startGameIcon = new ImageIcon("src/mafia/image/gameStart.png");
     Image startImage = startGameIcon.getImage();
     Image newStartImage = startImage.getScaledInstance(188, 39, Image.SCALE_SMOOTH);
@@ -33,6 +34,7 @@ public class StartPanel extends JPanel {
     startGameLabel.setBounds(458, 558, 188, 39);
     this.add(startGameLabel);
 
+    //나가기
     final ImageIcon outIcon = new ImageIcon("src/mafia/image/out.png");
     Image outImage = outIcon.getImage();
     Image newOutImage = outImage.getScaledInstance(188, 39, Image.SCALE_SMOOTH);
@@ -42,6 +44,7 @@ public class StartPanel extends JPanel {
     outLabel.setBounds(458, 652, 188, 39);
     this.add(outLabel);
 
+    //게임 시작 클릭 이벤트
     startGameLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -58,6 +61,7 @@ public class StartPanel extends JPanel {
       }
     });
 
+    //나가기 클릭 이벤트
     outLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -65,10 +69,11 @@ public class StartPanel extends JPanel {
       }
     });
 
+    //게임 시작 마우스 이벤트
     startGameLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseEntered(MouseEvent e) {
-        ImageIcon brokenStartIcon = new ImageIcon("src/mafia/image/gameStart_broken.png"); // Change the path accordingly
+        ImageIcon brokenStartIcon = new ImageIcon("src/mafia/image/gameStart_broken.png");
         Image brokenStartImage = brokenStartIcon.getImage();
         Image newBrokenStartImage = brokenStartImage.getScaledInstance(startGameIcon.getIconWidth(), startGameIcon.getIconHeight(), Image.SCALE_SMOOTH);
         brokenStartIcon.setImage(newBrokenStartImage);
@@ -81,10 +86,11 @@ public class StartPanel extends JPanel {
       }
     });
 
+    //나가기 마우스 이벤트
     outLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseEntered(MouseEvent e) {
-        ImageIcon brokenOutIcon = new ImageIcon("src/mafia/image/out_broken.png"); // Change the path accordingly
+        ImageIcon brokenOutIcon = new ImageIcon("src/mafia/image/out_broken.png");
         Image brokenOutImage = brokenOutIcon.getImage();
         Image newBrokenOutImage = brokenOutImage.getScaledInstance(outIcon.getIconWidth(), outIcon.getIconHeight(), Image.SCALE_SMOOTH);
         brokenOutIcon.setImage(newBrokenOutImage);
@@ -97,6 +103,7 @@ public class StartPanel extends JPanel {
       }
     });
 
+    //MAFIA 로고 사진
     ImageIcon logoIcon = new ImageIcon("src/mafia/image/logo.png");
     Image logoImage = logoIcon.getImage();
     Image newLogoImage = logoImage.getScaledInstance(500, 300, Image.SCALE_SMOOTH);
@@ -106,6 +113,7 @@ public class StartPanel extends JPanel {
     logoLabel.setBounds(304, 50, 500, 300);
     this.add(logoLabel);
 
+    //총알 사진
     ImageIcon gunIcon = new ImageIcon("src/mafia/image/gun.png");
     Image gunImage = gunIcon.getImage();
     Image newGunImage = gunImage.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
@@ -115,6 +123,7 @@ public class StartPanel extends JPanel {
     gunLabel.setBounds(50, 350, 200, 150);
     this.add(gunLabel);
 
+    //깨진 유리 사진
     ImageIcon brokenIcon = new ImageIcon("src/mafia/image/broken.png");
     Image brokenImage = brokenIcon.getImage();
     Image newBrokenImage = brokenImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
