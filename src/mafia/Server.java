@@ -15,6 +15,7 @@ public class Server {
   static DataInputStream is;
   static DataOutputStream os;
   static Boolean isStart = false;
+  static int counter = 0;
 
   static void startGame(){
     isStart = true;
@@ -31,7 +32,7 @@ public class Server {
       is = new DataInputStream(s.getInputStream());
       os = new DataOutputStream(s.getOutputStream());
 
-      String name = is.readUTF();
+      String name = is.readUTF() + " #" + String.valueOf(++counter);
       ServerThread thread = new ServerThread(s, name, is, os);
       list.add(thread);
       thread.start();
