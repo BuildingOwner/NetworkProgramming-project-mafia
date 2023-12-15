@@ -146,7 +146,7 @@ public class Game extends Thread {
     notice("", "member");
     notice("true", "isGameRun");
     while (gameFlag) {
-//      checkFinish();
+      checkFinish();
       if (dayNight == DayNight.DAY) {
 
       }
