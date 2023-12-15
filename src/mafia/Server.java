@@ -18,7 +18,7 @@ public class Server {
   static int counter = 0;
   static Game game;
 
-  static void startGame(){
+  static void startGame() {
     isStart = true;
     game = new Game(list);
     game.start();

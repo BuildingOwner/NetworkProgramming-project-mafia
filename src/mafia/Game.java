@@ -8,15 +8,50 @@ public class Game extends Thread {
   private String[] jobs = {"시민", "마피아", "의사"};
   private int[] jobCount = {1, 1, 1};
   private List<User> users = new ArrayList<>();
-  DayNight dayNight = DayNight.NIGHT;
+  DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
   private String[] voteName;
   private int[] voteCount;
+  private String mafiaPick = "";
+  private String doctorPick = " ";
 
   public Game(ArrayList<ServerThread> list) {
     this.serverThreads = list;
     init();
   }
+
+  public void skillPick(String pick, String skill, ServerThread s) {
+    if (pick == null || pick.isEmpty()) {
+      return;
+    }
+    if (skill.equals("kill")) {
+      mafiaPick = pick;
+      noticePersonal(s, "당신은 " + mafiaPick + "님을 죽일겁니다.", "chat");
+    }
+    if (skill.equals("heal")) {
+      doctorPick = pick;
+      noticePersonal(s, "당신은 " + doctorPick + "님을 살릴겁니다.", "chat");
+    }
+
+  }
+
+  public void killProcessing() {
+    if (mafiaPick.equals(doctorPick)) {
+      notice("의사가 치료에 성공했습니다.", "chat");
+    } else {
+      for (int i = 0; i < users.size(); i++) {
+        if (mafiaPick.equals(users.get(i).name.split("#")[0])) {
+          users.get(i).isDead = true;
+          notice("간밤에 " + users.get(i).name + "님이 마피아에게 습격당해 죽었습니다.", "chat");
+          serverThreads.get(i).isDead = true;
+          noticePersonal(serverThreads.get(i), "", "death");
+        }
+      }
+    }
+    mafiaPick = "";
+    doctorPick = "";
+  }
+
 
   public void voting(String voter, String pick) {
     int index = 9999;
@@ -95,10 +130,15 @@ public class Game extends Thread {
       User u = new User(serverThreads.get(i).name, jobs[num]);
       users.add(u);
       noticePersonal(serverThreads.get(i), "개인 : 당신의 직업은 " + u.jab + "입니다.", "chat");
+      noticePersonal(serverThreads.get(i), u.jab, "job");
     }
 
     voteName = new String[serverThreads.size()];
     voteCount = new int[serverThreads.size()];
+    for(int i=0; i<voteName.length; i++){
+      voteName[i] = "";
+      voteCount[i] = 0;
+    }
   }
 
   public void run() {
@@ -106,7 +146,7 @@ public class Game extends Thread {
     notice("", "member");
     notice("true", "isGameRun");
     while (gameFlag) {
-//      checkFinish();
+      checkFinish();
       if (dayNight == DayNight.DAY) {
 
       }
@@ -131,21 +171,27 @@ public class Game extends Thread {
             notice("night", "dayNight");
             break;
           case NIGHT:
+            dayNight = DayNight.HEAL;
+            notice("now Heal", "chat");
+            notice("heal", "dayNight");
+            break;
+          case HEAL:
+            killProcessing();
             dayNight = DayNight.DAY;
             notice("now Day", "chat");
             notice("day", "dayNight");
             break;
         }
       }
-    }, 0, 10000);
+    }, 0, 20000);
 
-    final int[] leftTime = {10};
+    final int[] leftTime = {20};
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
         notice(String.valueOf(leftTime[0]--), "leftTime");
         if (leftTime[0] <= 0) {
-          leftTime[0] = 10;
+          leftTime[0] = 20;
         }
       }
     }, 0, 1000);
@@ -214,6 +260,10 @@ public class Game extends Thread {
 
       if (method.equals("death")) {
         s.os.writeUTF("death/" + str);
+      }
+
+      if (method.equals("job")) {
+        s.os.writeUTF("job/" + str);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
