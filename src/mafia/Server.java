@@ -16,10 +16,11 @@ public class Server {
   static DataOutputStream os;
   static Boolean isStart = false;
   static int counter = 0;
+  static Game game;
 
   static void startGame(){
     isStart = true;
-    Game game = new Game(list);
+    game = new Game(list);
     game.start();
   }
 
@@ -32,7 +33,7 @@ public class Server {
       is = new DataInputStream(s.getInputStream());
       os = new DataOutputStream(s.getOutputStream());
 
-      String name = is.readUTF() + " #" + String.valueOf(++counter);
+      String name = is.readUTF() + "#" + String.valueOf(++counter);
       ServerThread thread = new ServerThread(s, name, is, os);
       list.add(thread);
       thread.start();
