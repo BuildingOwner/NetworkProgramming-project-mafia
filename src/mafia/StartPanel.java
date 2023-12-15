@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class StartPanel extends JPanel {
   private JTextField userName;
+
   public StartPanel(JFrame frame) {
     setBounds(100, 100, 1109, 969);
     this.setLayout(null);
@@ -36,10 +37,9 @@ public class StartPanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String name = userName.getText();
-        if(name == null || name.trim().isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
           JOptionPane.showMessageDialog(frame, "이름을 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
-        }
-        else {
+        } else {
           try {
             new ClientGame(frame, name);
           } catch (IOException ex) {

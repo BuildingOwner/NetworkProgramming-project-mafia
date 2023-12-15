@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 class ServerThread extends Thread {
-  Scanner scn = new Scanner(System.in);
+
   public String name;
   final DataInputStream is;
   final DataOutputStream os;
@@ -63,6 +63,14 @@ class ServerThread extends Thread {
 
         if (msg[1].equals("vote")) {
           Server.game.voting(msg[0], msg[2]);
+        }
+
+        if (msg[1].equals("kill")) {
+          Server.game.skillPick(msg[2], "kill", this);
+        }
+
+        if (msg[1].equals("heal")) {
+          Server.game.skillPick(msg[2], "heal", this);
         }
 
       } catch (IOException e) {
