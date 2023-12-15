@@ -22,7 +22,7 @@ public class GamePanel extends JPanel {
       public void actionPerformed(ActionEvent e) {
         String s = chat.getText();
 
-        if (clientGame.isDead){
+        if (clientGame.isDead) {
           clientGame.sendMessage(clientGame.name + "/chat/" + s + "/death");
           chatArea.append(clientGame.name + " (사망자) : " + s + "\n");
         } else {
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel {
 
     String[] processingTag = clientGame.name.split("#");
     String tag = processingTag[processingTag.length - 1];
-    if(!tag.equals("1")){
+    if (!tag.equals("1")) {
       startBtn.setEnabled(false);
     }
 
@@ -70,8 +70,14 @@ public class GamePanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String s = vote.getText();
-        clientGame.sendMessage(clientGame.name + "/vote/" + s);
-        chatArea.append("("+clientGame.name + "님의 투표 : " + s + ")\n");
+
+        if (clientGame.now == DayNight.NIGHT) {
+          clientGame.sendMessage(clientGame.name + "/kill/" + s);
+        } else if (clientGame.now == DayNight.HEAL) {
+          clientGame.sendMessage(clientGame.name + "/heal/" + s);
+        } else {
+          clientGame.sendMessage(clientGame.name + "/vote/" + s);
+        }
         vote.setText("");
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
       }

@@ -16,6 +16,7 @@ public class ClientGame {
   public GamePanel gp;
   public Boolean gameFlag = false;
   public Boolean isDead = false;
+  public String job;
 
   public ClientGame(JFrame frame, String name) throws IOException {
     this.name = name;
