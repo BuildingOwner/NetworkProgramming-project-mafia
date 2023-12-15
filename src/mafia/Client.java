@@ -8,7 +8,7 @@ public class Client extends JFrame {
   public Client(){
     super("Mafia");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 1109, 969);
+    setBounds(100, 100, 1280, 900);
     setVisible(true);
     switchPanel(this, new StartPanel(this));
   }
