@@ -6,13 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel {
-  private JTextField chat;
+  public JTextField chat;
   public JTextArea chatArea;
   public JButton startBtn;
-  private JTextField vote;
+  public JTextField vote;
   public JLabel member;
+  public JLabel time;
 
-  public GamePanel(JFrame frame, GameChat gameChat) {
+  public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
     chat = new JTextField(30);
     chat.setBounds(91, 608, 624, 53);
@@ -20,8 +21,14 @@ public class GamePanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String s = chat.getText();
-        gameChat.sendMessage(gameChat.name + "/chat/" + s);
-        chatArea.append(gameChat.name + " : " + s + "\n");
+
+        if (clientGame.isDead){
+          clientGame.sendMessage(clientGame.name + "/chat/" + s + "/death");
+          chatArea.append(clientGame.name + " (사망자) : " + s + "\n");
+        } else {
+          clientGame.sendMessage(clientGame.name + "/chat/" + s + "/alive");
+          chatArea.append(clientGame.name + " (생존자) : " + s + "\n");
+        }
         chat.setText("");
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
       }
@@ -36,11 +43,11 @@ public class GamePanel extends JPanel {
     startBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        gameChat.sendMessage(gameChat.name + "/gameStart");
+        clientGame.sendMessage(clientGame.name + "/gameStart");
       }
     });
 
-    String[] processingTag = gameChat.name.split("#");
+    String[] processingTag = clientGame.name.split("#");
     String tag = processingTag[processingTag.length - 1];
     if(!tag.equals("1")){
       startBtn.setEnabled(false);
@@ -63,12 +70,16 @@ public class GamePanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String s = vote.getText();
-        gameChat.sendMessage(gameChat.name + "/vote/" + s);
-        chatArea.append("("+gameChat.name + "님의 투표 : " + s + ")\n");
+        clientGame.sendMessage(clientGame.name + "/vote/" + s);
+        chatArea.append("("+clientGame.name + "님의 투표 : " + s + ")\n");
         vote.setText("");
         chatArea.setCaretPosition(chatArea.getDocument().getLength());
       }
     });
+
+    time = new JLabel("30");
+    time.setBounds(887, 336, 103, 75);
+    time.setFont(new Font("굴림", Font.PLAIN, 30));
 
     this.add(startBtn);
     this.add(chat);
@@ -76,6 +87,7 @@ public class GamePanel extends JPanel {
     this.add(votelable);
     this.add(member);
     this.add(vote);
+    this.add(time);
 
     setVisible(true);
   }

@@ -61,7 +61,7 @@ public class StartPanel extends JPanel {
           JOptionPane.showMessageDialog(frame, "이름을 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
         } else {
           try {
-            new GameChat(frame, name);
+            new ClientGame(frame, name);
           } catch (IOException ex) {
             throw new RuntimeException(ex);
           }
