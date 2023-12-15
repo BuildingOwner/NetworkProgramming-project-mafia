@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
     chat = new JTextField(30);
-    chat.setBounds(91, 608, 624, 53);
+    chat.setBounds(20, 542, 762, 30);
     chat.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -35,8 +35,24 @@ public class GamePanel extends JPanel {
     });
 
     chatArea = new JTextArea(10, 30);
-    chatArea.setBounds(91, 39, 691, 493);
+    chatArea.setBounds(20, 39, 762, 493);
     chatArea.setEditable(false);
+
+    JLabel[] roleLabels = new JLabel[10];
+
+    // 생존자 사진
+    for (int i = 0; i < 2; i++) {
+      roleLabels[i] = createRoleLabel("src/mafia/image/citizen.png", 800 + i * 80, 39);
+      this.add(roleLabels[i]);
+    }
+
+    // 경찰, 마피아, 의사 사진
+    String[] roles = {"police", "mafia","mafia", "doctor"};
+    for (int i = 0; i < roles.length; i++) {
+      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 800 + (i + 2) * 80, 39);
+      this.add(roleLabels[i + 2]);
+    }
+
 
     startBtn = new JButton("시작");
     startBtn.setBounds(887, 636, 103, 75);
@@ -96,5 +112,18 @@ public class GamePanel extends JPanel {
     this.add(time);
 
     setVisible(true);
+  }
+
+  //역할 사진 보여주는 함수
+  private JLabel createRoleLabel(String imagePath, int x, int y) {
+    ImageIcon icon = new ImageIcon(imagePath);
+    Image image = icon.getImage();
+    Image newImage = image.getScaledInstance(70, 100, Image.SCALE_SMOOTH);
+    icon = new ImageIcon(newImage);
+
+    JLabel label = new JLabel(icon);
+    label.setBounds(x, y, 70, 100);
+
+    return label;
   }
 }
