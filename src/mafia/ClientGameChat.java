@@ -34,6 +34,8 @@ public class ClientGameChat extends Thread{
               clientGame.now = DayNight.NIGHT;
               break;
           }
+          clientGame.gp.chat.setEnabled(clientGame.now == DayNight.DAY || clientGame.isDead);
+          clientGame.gp.vote.setEnabled(!clientGame.isDead && clientGame.now == DayNight.VOTE);
         }
 
         if (msg[0].equals("death")) {
@@ -44,12 +46,16 @@ public class ClientGameChat extends Thread{
           switch (msg[1]){
             case "true":
               clientGame.gameFlag = true;
-              clientGame.startGame();
+              clientGame.gp.startBtn.setEnabled(false);
               break;
             case "false":
               clientGame.gameFlag = false;
               break;
           }
+        }
+
+        if(msg[0].equals("leftTime")){
+          clientGame.gp.time.setText(msg[1]);
         }
       } catch (IOException e) {
         e.printStackTrace();

@@ -33,19 +33,10 @@ public class ClientGame {
 
     gp = new GamePanel(frame, this);
 
-    ClientGameChat cgt = new ClientGameChat(this);
-    cgt.start();
+    ClientGameChat cgc = new ClientGameChat(this);
+    cgc.start();
 
     Client.switchPanel(frame, gp);
-  }
-
-  public void startGame() {
-    new Thread(() -> {
-      while (gameFlag) {
-        gp.chat.setEnabled(now == DayNight.DAY);
-        gp.vote.setEnabled(!isDead && now == DayNight.VOTE);
-      }
-    }).start();
   }
 
   public void sendMessage(String s) {

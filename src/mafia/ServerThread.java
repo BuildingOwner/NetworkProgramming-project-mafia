@@ -14,7 +14,7 @@ class ServerThread extends Thread {
   final DataOutputStream os;
   Socket s;
   boolean active;
-  private List<User> users;
+  public Boolean isDead = false;
 
   public ServerThread(Socket s, String name, DataInputStream is, DataOutputStream os) {
     this.is = is;
@@ -23,7 +23,7 @@ class ServerThread extends Thread {
     this.s = s;
     this.active = true;
     try {
-      os.writeUTF("name/"+name);
+      os.writeUTF("name/" + name);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -46,24 +46,22 @@ class ServerThread extends Thread {
         if (msg[1].equals("chat")) {
           for (ServerThread t : Server.list) {
             if (!t.name.equals(msg[0])) {
-              if(msg[3].equals("death")){
-                for(User u : users){
-                  if(!u.isDead){
-                    t.os.writeUTF("chat/" + this.name + " (사망자) : " + msg[2]);
-                  }
+              if (msg[3].equals("death")) {
+                if (t.isDead) {
+                  t.os.writeUTF("chat/" + this.name + " (사망자) : " + msg[2]);
                 }
-              }else {
+              } else {
                 t.os.writeUTF("chat/" + this.name + " (생존자) : " + msg[2]);
               }
             }
           }
         }
 
-        if(msg[1].equals("gameStart")){
+        if (msg[1].equals("gameStart")) {
           Server.startGame();
         }
 
-        if(msg[1].equals("vote")){
+        if (msg[1].equals("vote")) {
           Server.game.voting(msg[0], msg[2]);
         }
 
@@ -80,7 +78,5 @@ class ServerThread extends Thread {
     }
   }
 
-  public void getUser(List<User> users){
-    this.users = users;
-  }
+
 }

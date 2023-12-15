@@ -11,6 +11,7 @@ public class GamePanel extends JPanel {
   public JButton startBtn;
   public JTextField vote;
   public JLabel member;
+  public JLabel time;
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
@@ -76,12 +77,17 @@ public class GamePanel extends JPanel {
       }
     });
 
+    time = new JLabel("30");
+    time.setBounds(887, 336, 103, 75);
+    time.setFont(new Font("굴림", Font.PLAIN, 30));
+
     this.add(startBtn);
     this.add(chat);
     this.add(chatArea);
     this.add(votelable);
     this.add(member);
     this.add(vote);
+    this.add(time);
 
     setVisible(true);
   }
