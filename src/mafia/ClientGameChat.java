@@ -50,7 +50,6 @@ public class ClientGameChat extends Thread {
         if (msg[0].equals("death")) {
           clientGame.isDead = true;
         }
-
         if (msg[0].equals("isGameRun")) {
           switch (msg[1]) {
             case "true":

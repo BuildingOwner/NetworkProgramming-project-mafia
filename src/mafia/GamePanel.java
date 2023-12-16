@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel {
   public JTextField chat;
+  public JScrollPane scrollPane; // JScrollPane 추가
   public JTextArea chatArea;
   public JButton startBtn;
   public JTextField vote;
@@ -15,6 +16,7 @@ public class GamePanel extends JPanel {
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
+
     chat = new JTextField(30);
     chat.setBounds(20, 542, 762, 30);
     chat.addActionListener(new ActionListener() {
@@ -35,19 +37,23 @@ public class GamePanel extends JPanel {
     });
 
     chatArea = new JTextArea(10, 30);
-    chatArea.setBounds(20, 39, 762, 493);
+    scrollPane = new JScrollPane(chatArea);
+    scrollPane.setBounds(20, 39, 762, 493);
+    this.add(scrollPane);
     chatArea.setEditable(false);
+//    chatArea.setBounds(20, 39, 762, 493);
+//    chatArea.setEditable(false);
 
     JLabel[] roleLabels = new JLabel[10];
 
     // 생존자 사진
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 1; i++) {
       roleLabels[i] = createRoleLabel("src/mafia/image/citizen.png", 800 + i * 80, 39);
       this.add(roleLabels[i]);
     }
 
     // 경찰, 마피아, 의사 사진
-    String[] roles = {"police", "mafia","mafia", "doctor"};
+    String[] roles = {"police", "mafia","doctor"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 800 + (i + 2) * 80, 39);
       this.add(roleLabels[i + 2]);
@@ -105,13 +111,19 @@ public class GamePanel extends JPanel {
 
     this.add(startBtn);
     this.add(chat);
-    this.add(chatArea);
+    this.add(scrollPane); // JScrollPane 추가
+    //this.add(chatArea);
     this.add(votelable);
     this.add(member);
     this.add(vote);
     this.add(time);
 
     setVisible(true);
+  }
+
+  private String extractName(String fullName) {
+    String[] parts = fullName.split("#");
+    return parts[0];
   }
 
   //역할 사진 보여주는 함수

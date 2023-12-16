@@ -6,7 +6,7 @@ import java.util.*;
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"};
-  private int[] jobCount = {2, 1, 1, 1}; //시민2, 마피아1, 의사1, 경찰1
+  private int[] jobCount = {1, 1, 1, 1};
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
@@ -145,6 +145,7 @@ public class Game extends Thread {
   public void run() {
     timer();
     notice("", "member");
+    notice("","statusLabel");
     notice("true", "isGameRun");
     checkFinish();
   }
@@ -238,6 +239,11 @@ public class Game extends Thread {
         names.append("[").append(s.name).append("] ");
       }
     }
+    if (method.equals("statusLabel")) {
+      for (ServerThread s : serverThreads) {
+        names.append("[").append(s.name).append("] ");
+      }
+    }
     for (ServerThread s : serverThreads) {
       try {
         if (method.equals("chat")) {
@@ -284,4 +290,3 @@ public class Game extends Thread {
   }
 
 }
-
