@@ -75,6 +75,8 @@ public class GamePanel extends JPanel {
           clientGame.sendMessage(clientGame.name + "/kill/" + s);
         } else if (clientGame.now == DayNight.HEAL) {
           clientGame.sendMessage(clientGame.name + "/heal/" + s);
+        } else if (clientGame.now == DayNight.POLICE) {
+          clientGame.sendMessage(clientGame.name + "/police/" + s);
         } else {
           clientGame.sendMessage(clientGame.name + "/vote/" + s);
         }
