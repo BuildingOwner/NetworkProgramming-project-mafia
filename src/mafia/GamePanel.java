@@ -13,6 +13,7 @@ public class GamePanel extends JPanel {
   public JTextField vote;
   public JLabel member;
   public JLabel time;
+  public JLabel jlabel;
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
@@ -83,6 +84,10 @@ public class GamePanel extends JPanel {
     member.setBounds(57, 636, 763, 85);
 
 
+    jlabel = new JLabel("직업");
+    jlabel.setFont(new Font("굴림", Font.PLAIN, 30));
+    jlabel.setBounds(57, 700, 763, 85);
+
     vote = new JTextField();
     vote.setBounds(142, 776, 679, 59);
     vote.setColumns(10);
@@ -127,6 +132,7 @@ public class GamePanel extends JPanel {
     this.add(vote);
     this.add(time);
     this.add(imageLabel);
+    this.add(jlabel);
 
     setVisible(true);
   }

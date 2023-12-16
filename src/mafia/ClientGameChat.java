@@ -23,6 +23,10 @@ public class ClientGameChat extends Thread {
         if (msg[0].equals("member")) {
           clientGame.gp.member.setText(new String(msg[1]));
         }
+        if (msg[0].equals("job")) {
+          clientGame.gp.jlabel.setText(new String(msg[1]));
+        }
+
 
         if (msg[0].equals("dayNight")) {
           switch (msg[1]) {
