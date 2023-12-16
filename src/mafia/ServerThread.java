@@ -73,6 +73,10 @@ class ServerThread extends Thread {
           Server.game.skillPick(msg[2], "heal", this);
         }
 
+        if (msg[1].equals("police")){
+          Server.game.skillPick(msg[2], "police", this);
+        }
+
       } catch (IOException e) {
         e.printStackTrace();
         break;

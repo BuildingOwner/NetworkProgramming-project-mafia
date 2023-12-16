@@ -22,6 +22,9 @@ public class ClientGameChat extends Thread {
 
         if (msg[0].equals("member")) {
           clientGame.gp.member.setText(new String(msg[1]));
+          String nameProcessed = msg[1].replace("[","").replace("]","");
+          clientGame.userNames = nameProcessed.split(" ");
+          System.out.println(clientGame.userNames.toString());
         }
 
         if (msg[0].equals("dayNight")) {
@@ -35,6 +38,9 @@ public class ClientGameChat extends Thread {
             case "night":
               clientGame.now = DayNight.NIGHT;
               break;
+            case "police":
+              clientGame.now = DayNight.POLICE;
+              break;
             case "heal":
               clientGame.now = DayNight.HEAL;
               break;
@@ -42,8 +48,9 @@ public class ClientGameChat extends Thread {
           clientGame.gp.chat.setEnabled(clientGame.now == DayNight.DAY || clientGame.isDead);
           clientGame.gp.vote.setEnabled(
               (!clientGame.isDead && clientGame.now == DayNight.VOTE) ||
-              (clientGame.job.equals("마피아") && clientGame.now == DayNight.NIGHT) ||
-              (clientGame.job.equals("의사") && clientGame.now == DayNight.HEAL)
+                  (!clientGame.isDead && clientGame.job.equals("마피아") && clientGame.now == DayNight.NIGHT) ||
+                  (!clientGame.isDead && clientGame.job.equals("의사") && clientGame.now == DayNight.HEAL) ||
+                  (!clientGame.isDead && clientGame.job.equals("경찰") && clientGame.now == DayNight.POLICE)
           );
         }
 

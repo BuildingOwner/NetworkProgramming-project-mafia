@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePanel extends JPanel {
   public JTextField chat;
@@ -70,11 +72,47 @@ public class GamePanel extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
         String s = vote.getText();
+        String[] strs = s.split("#");
+        boolean nameCheck = false;
+
+        List<String> registeredNames = new ArrayList<>();
+        for(String name : clientGame.userNames){
+          registeredNames.add(name.split("#")[0]);
+          if(strs.length>1){
+            if(s.equals(name)){
+              nameCheck = true;
+            }
+          }else {
+            if(strs[0].equals(name.split("#")[0])){
+              nameCheck = true;
+            }
+          }
+        }
+
+        int count = 0;
+        for(String rn : registeredNames){
+          if(strs.length<2){
+            if(strs[0].equals(rn)){
+              count++;
+            }
+            if(count>1){
+              nameCheck = false;
+              break;
+            }
+          }
+        }
+
+        if(!nameCheck){
+          JOptionPane.showMessageDialog(frame, "정확한 이름을 입력하세요.\n ex)(이름) or (이름)#(숫자)", "오류", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
 
         if (clientGame.now == DayNight.NIGHT) {
           clientGame.sendMessage(clientGame.name + "/kill/" + s);
         } else if (clientGame.now == DayNight.HEAL) {
           clientGame.sendMessage(clientGame.name + "/heal/" + s);
+        } else if (clientGame.now == DayNight.POLICE) {
+          clientGame.sendMessage(clientGame.name + "/police/" + s);
         } else {
           clientGame.sendMessage(clientGame.name + "/vote/" + s);
         }

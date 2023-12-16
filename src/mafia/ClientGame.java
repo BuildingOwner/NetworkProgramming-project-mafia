@@ -17,6 +17,7 @@ public class ClientGame {
   public Boolean gameFlag = false;
   public Boolean isDead = false;
   public String job;
+  public String[] userNames;
 
   public ClientGame(JFrame frame, String name) throws IOException {
     this.name = name;
