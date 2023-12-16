@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class GamePanel extends JPanel {
   public JTextField chat;
-  public JScrollPane scrollPane; // JScrollPane 추가
+  public JScrollPane scrollPane;
   public JTextArea chatArea;
   public JButton startBtn;
   public JTextField vote;
@@ -41,8 +41,6 @@ public class GamePanel extends JPanel {
     scrollPane.setBounds(20, 39, 762, 493);
     this.add(scrollPane);
     chatArea.setEditable(false);
-//    chatArea.setBounds(20, 39, 762, 493);
-//    chatArea.setEditable(false);
 
     JLabel[] roleLabels = new JLabel[10];
 
@@ -106,17 +104,29 @@ public class GamePanel extends JPanel {
     });
 
     time = new JLabel("30");
-    time.setBounds(887, 336, 103, 75);
+    time.setBounds(887, 150, 103, 75);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
+    time.setForeground(Color.WHITE);
+    time.setHorizontalAlignment(SwingConstants.CENTER);
+    time.setVerticalAlignment(SwingConstants.CENTER);
+
+// JLabel 추가 - 사진을 표시할 라벨
+    JLabel imageLabel = new JLabel();
+    ImageIcon bombIcon = new ImageIcon("src/mafia/image/bomb.png");
+    Image image = bombIcon.getImage();
+    Image newImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+    ImageIcon scaledBombIcon = new ImageIcon(newImage);
+    imageLabel.setIcon(scaledBombIcon);
+    imageLabel.setBounds(887, 100, 200, 200);
 
     this.add(startBtn);
     this.add(chat);
-    this.add(scrollPane); // JScrollPane 추가
-    //this.add(chatArea);
+    this.add(scrollPane);
     this.add(votelable);
     this.add(member);
     this.add(vote);
     this.add(time);
+    this.add(imageLabel);
 
     setVisible(true);
   }
@@ -138,4 +148,5 @@ public class GamePanel extends JPanel {
 
     return label;
   }
+
 }

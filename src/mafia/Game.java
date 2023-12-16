@@ -145,7 +145,6 @@ public class Game extends Thread {
   public void run() {
     timer();
     notice("", "member");
-    notice("","statusLabel");
     notice("true", "isGameRun");
     checkFinish();
   }
@@ -235,11 +234,6 @@ public class Game extends Thread {
   public void notice(String str, String method) {
     StringBuilder names = new StringBuilder();
     if (method.equals("member")) {
-      for (ServerThread s : serverThreads) {
-        names.append("[").append(s.name).append("] ");
-      }
-    }
-    if (method.equals("statusLabel")) {
       for (ServerThread s : serverThreads) {
         names.append("[").append(s.name).append("] ");
       }

@@ -41,9 +41,9 @@ public class ClientGameChat extends Thread {
           }
           clientGame.gp.chat.setEnabled(clientGame.now == DayNight.DAY || clientGame.isDead);
           clientGame.gp.vote.setEnabled(
-              (!clientGame.isDead && clientGame.now == DayNight.VOTE) ||
-              (clientGame.job.equals("마피아") && clientGame.now == DayNight.NIGHT) ||
-              (clientGame.job.equals("의사") && clientGame.now == DayNight.HEAL)
+                  (!clientGame.isDead && clientGame.now == DayNight.VOTE) ||
+                          (clientGame.job.equals("마피아") && clientGame.now == DayNight.NIGHT) ||
+                          (clientGame.job.equals("의사") && clientGame.now == DayNight.HEAL)
           );
         }
 
