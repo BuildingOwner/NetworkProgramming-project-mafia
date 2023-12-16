@@ -22,6 +22,9 @@ public class ClientGameChat extends Thread {
 
         if (msg[0].equals("member")) {
           clientGame.gp.member.setText(new String(msg[1]));
+          String nameProcessed = msg[1].replace("[","").replace("]","");
+          clientGame.userNames = nameProcessed.split(" ");
+          System.out.println(clientGame.userNames.toString());
         }
 
         if (msg[0].equals("dayNight")) {

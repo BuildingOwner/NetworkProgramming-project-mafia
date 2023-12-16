@@ -80,7 +80,7 @@ public class Game extends Thread {
     System.out.println(Arrays.toString(voteName));
   }
 
-  public void voteKill() {
+  public Boolean voteKill() {
     boolean isEmpty = true;
 
     for (int i = 0; i < users.size(); i++) {
@@ -94,7 +94,7 @@ public class Game extends Thread {
 
     if (isEmpty) {
       notice("투표로 죽은 사람이 없습니다.", "chat");
-      return;
+      return true;
     }
 
     for (int i = 0; i < voteName.length; i++) {
@@ -110,14 +110,22 @@ public class Game extends Thread {
 
     int max = Arrays.stream(voteCount).max().orElse(9999);
     if (max == 9999 || max == 0) {
-      return;
+      return true;
     }
 
     int index = 9999;
+    int duplicationCount = 0;
     for (int i = 0; i < voteCount.length; i++) {
       if (voteCount[i] == max) {
+        duplicationCount++;
         index = i;
       }
+    }
+
+    if(duplicationCount>1){
+      notice("최다 득표 인물이 2명 이상입니다. 다시 투표해 주세요", "chat");
+      dayNight = DayNight.DAY;
+      return false;
     }
 
     notice(users.get(index).name + "님이 투표로 죽었습니다.", "chat");
@@ -130,6 +138,8 @@ public class Game extends Thread {
       voteCount[i] = 0;
       voteName[i] = "";
     }
+
+    return true;
   }
 
   public void init() {
@@ -175,8 +185,7 @@ public class Game extends Thread {
               notice("vote", "dayNight");
               break;
             case VOTE:
-              voteKill();
-              if (!checkFinish()) {
+              if (voteKill() && !checkFinish()) {
                 dayNight = DayNight.NIGHT;
                 notice("now Night", "chat");
                 notice("night", "dayNight");
