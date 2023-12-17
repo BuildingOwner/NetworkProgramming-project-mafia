@@ -1,12 +1,16 @@
 package mafia;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
+import java.util.Timer;
 
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"};
-  private int[] jobCount = {1, 1, 1, 1};
+  private int[] jobCount = {1, 2, 1, 1};
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
@@ -14,9 +18,12 @@ public class Game extends Thread {
   private int[] voteCount;
   private String mafiaPick = "";
   private String doctorPick = " ";
+  private int policeSkillPoint = 1;
+  private ClientGame clientGame;
 
   public Game(ArrayList<ServerThread> list) {
     this.serverThreads = list;
+    this.clientGame = clientGame;
     init();
   }
 
@@ -32,15 +39,26 @@ public class Game extends Thread {
       doctorPick = pick;
       noticePersonal(s, "개인 : 당신은 " + doctorPick + "님을 살릴겁니다.", "chat");
     }
-
+    if (skill.equals("police")) {
+      if(policeSkillPoint == 1){
+        policeSkillPoint--;
+        for (int i = 0; i < users.size(); i++) {
+          if (pick.split("#")[0].equals(users.get(i).name.split("#")[0])) {
+            noticePersonal(s, "개인 : " + users.get(i).name + "님의 직업은 " + users.get(i).jab + "입니다.", "chat");
+          }
+        }
+      }else {
+        noticePersonal(s, "개인 : 오늘은 이미 조사를 시도해서 더 이상 조사를 할 수 없습니다.", "chat");
+      }
+    }
   }
 
   public void killProcessing() {
-    if (mafiaPick.equals(doctorPick)) {
+    if (mafiaPick.split("#")[0].equals(doctorPick.split("#")[0])) {
       notice("의사가 치료에 성공했습니다.", "chat");
     } else {
       for (int i = 0; i < users.size(); i++) {
-        if (mafiaPick.equals(users.get(i).name.split("#")[0])) {
+        if (mafiaPick.split("#")[0].equals(users.get(i).name.split("#")[0])) {
           notice("간밤에 " + users.get(i).name + "님이 마피아에게 습격당해 죽었습니다.", "chat");
           noticePersonal(serverThreads.get(i), "", "death");
           users.get(i).isDead = true;
@@ -68,7 +86,7 @@ public class Game extends Thread {
     System.out.println(Arrays.toString(voteName));
   }
 
-  public void voteKill() {
+  public Boolean voteKill() {
     boolean isEmpty = true;
 
     for (int i = 0; i < users.size(); i++) {
@@ -82,12 +100,12 @@ public class Game extends Thread {
 
     if (isEmpty) {
       notice("투표로 죽은 사람이 없습니다.", "chat");
-      return;
+      return true;
     }
 
     for (int i = 0; i < voteName.length; i++) {
       for (int j = 0; j < users.size(); j++) {
-        if (voteName[i].equals(users.get(j).name.split("#")[0])) {
+        if (voteName[i].split("#")[0].equals(users.get(j).name.split("#")[0])) {
           voteCount[j]++;
         }
       }
@@ -98,14 +116,22 @@ public class Game extends Thread {
 
     int max = Arrays.stream(voteCount).max().orElse(9999);
     if (max == 9999 || max == 0) {
-      return;
+      return true;
     }
 
     int index = 9999;
+    int duplicationCount = 0;
     for (int i = 0; i < voteCount.length; i++) {
       if (voteCount[i] == max) {
+        duplicationCount++;
         index = i;
       }
+    }
+
+    if(duplicationCount>1){
+      notice("최다 득표 인물이 2명 이상입니다. 다시 투표해 주세요", "chat");
+      dayNight = DayNight.DAY;
+      return false;
     }
 
     notice(users.get(index).name + "님이 투표로 죽었습니다.", "chat");
@@ -118,12 +144,15 @@ public class Game extends Thread {
       voteCount[i] = 0;
       voteName[i] = "";
     }
+
+    return true;
   }
 
   public void init() {
     Random rand = new Random();
     for (int i = 0; i < serverThreads.size(); i++) {
-      int num = rand.nextInt(jobs.length);;
+      int num = rand.nextInt(jobs.length);
+      ;
       while (jobCount[num] <= 0) {
         num = rand.nextInt(jobs.length); // 이제 변경 안해도 됨
       }
@@ -162,14 +191,19 @@ public class Game extends Thread {
               notice("vote", "dayNight");
               break;
             case VOTE:
-              voteKill();
-              if (!checkFinish()) {
+              if (voteKill() && !checkFinish()) {
                 dayNight = DayNight.NIGHT;
                 notice("now Night", "chat");
                 notice("night", "dayNight");
               }
               break;
             case NIGHT:
+              dayNight = DayNight.POLICE;
+              policeSkillPoint = 1;
+              notice("now Police", "chat");
+              notice("police", "dayNight");
+              break;
+            case POLICE:
               dayNight = DayNight.HEAL;
               notice("now Heal", "chat");
               notice("heal", "dayNight");
