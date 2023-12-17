@@ -1,3 +1,7 @@
+/*
+ * GamePanel 클래스
+ * 이 클래스는 마피아 게임의 메인 화면을 나타내는 패널입니다.
+ */
 package mafia;
 
 import javax.swing.*;
@@ -136,23 +140,16 @@ public class GamePanel extends JPanel {
       }
     });
 
-    // 생존자 사진
-    /*
-    for (int i = 0; i < 2; i++) {
-      roleLabels[i] = createRoleLabel("src/mafia/image/citizen.png", 790 + i * 80, 39);
-      this.add(roleLabels[i]);
-    }
-    */
     JLabel[] roleLabels = new JLabel[10]; //10개 배열 생성
 
     //배열에 사진명 넣으면 해당 사진이 화면 출력됨
-    String[] roles = {"citizen","citizen","police"}; //시민 2명, 경찰 1명
+    String[] roles = {"citizen","citizen","police"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
       this.add(roleLabels[i + 2]);
     }
 
-    String[] roles2 = {"mafia","mafia","doctor"}; //마피아 2명, 의사 1명
+    String[] roles2 = {"mafia","mafia","doctor"};
     for (int i = 0; i < roles2.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
       this.add(roleLabels[i + 2]);
@@ -173,14 +170,6 @@ public class GamePanel extends JPanel {
     startBtn.setFocusPainted(false);
     startBtn.setBounds(20, 680, 80, 45);
 
-    /*
-    ImageIcon startIcon = new ImageIcon("src/mafia/image/start.png");
-    Image startImage = startIcon.getImage().getScaledInstance(80, 75, Image.SCALE_SMOOTH);
-    startIcon = new ImageIcon(startImage);
-    startBtn.setIcon(startIcon);
-
-     */
-
     startBtn.addActionListener(new ActionListener() { //시작 버튼 클릭 시 이벤트 리스너
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -193,36 +182,6 @@ public class GamePanel extends JPanel {
     if (!tag.equals("1")) { //1이 아니면 -> 즉, 첫 번째 플레이어가 아니면
       startBtn.setEnabled(false); //시작 버튼 비활성화
     }
-
-/*
-//버튼에 이미지 넣으려고 했는데 오류 투성이라 패스
-    final ImageIcon startGameIcon = new ImageIcon("src/mafia/image/gameStart.png");
-    Image startGameIconImageImage = startGameIcon.getImage();
-    Image newStartImage = startGameIconImageImage.getScaledInstance(188, 39, Image.SCALE_SMOOTH);
-    startGameIcon.setImage(newStartImage);
-
-    JLabel startGameBtn = new JLabel(startGameIcon);
-    startGameBtn.setBounds(10, 670, 188, 39);
-    this.add(startGameBtn);
-
-    startBtn.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        ImageIcon ingIcon = new ImageIcon("src/mafia/image/진행중.png");
-        Image ingIconImage = ingIcon.getImage();
-        Image newIngImage = ingIconImage.getScaledInstance(startGameIcon.getIconWidth(), startGameIcon.getIconHeight(), Image.SCALE_SMOOTH);
-        ingIcon.setImage(newIngImage);
-        startGameBtn.setIcon(ingIcon);
-        clientGame.sendMessage(clientGame.name + "/gameStart");
-      }
-    });
-
-    String[] processingTag = clientGame.name.split("#");
-    String tag = processingTag[processingTag.length - 1];
-    if (!tag.equals("1")) {
-      startGameBtn.setEnabled(false);
-    }
- */
 
     time = new JLabel("30");
     time.setBounds(150, 680, 80, 45);

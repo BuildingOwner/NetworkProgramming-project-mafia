@@ -1,3 +1,7 @@
+/*
+ * StartPanel 클래스
+ * 이 클래스는 게임 시작 화면을 나타내는 패널입니다.
+ */
 package mafia;
 
 import javax.swing.*;

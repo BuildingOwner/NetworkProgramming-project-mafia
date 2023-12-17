@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Client extends JFrame {
 
-  public Client() {
+  public Client() { //생성자 함수
     super("Mafia");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 1280, 900);
