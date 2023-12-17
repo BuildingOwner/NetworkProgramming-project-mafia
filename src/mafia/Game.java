@@ -1,16 +1,14 @@
 package mafia;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 import java.util.Timer;
 
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"};
-  private int[] jobCount = {1, 2, 1, 1};
+  private int[] jobCount = {1, 1, 1, 1};
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
@@ -19,11 +17,9 @@ public class Game extends Thread {
   private String mafiaPick = "";
   private String doctorPick = " ";
   private int policeSkillPoint = 1;
-  private ClientGame clientGame;
 
   public Game(ArrayList<ServerThread> list) {
     this.serverThreads = list;
-    this.clientGame = clientGame;
     init();
   }
 
@@ -84,6 +80,20 @@ public class Game extends Thread {
     voteName[index] = pick;
     noticePersonal(serverThreads.get(index), "개인 : 당신은 " + voteName[index] + "에게 투표했습니다.", "chat");
     System.out.println(Arrays.toString(voteName));
+  }
+  public void displayMafiaImage() {
+    SwingUtilities.invokeLater(() -> {
+      JFrame mafiaFrame = new JFrame();
+      mafiaFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+      ImageIcon mafiaIcon = new ImageIcon();
+      JLabel mafiaLabel = new JLabel(mafiaIcon);
+
+      mafiaFrame.getContentPane().add(mafiaLabel);
+      mafiaFrame.pack();
+      mafiaFrame.setLocationRelativeTo(null);
+      mafiaFrame.setVisible(true);
+    });
   }
 
   public Boolean voteKill() {

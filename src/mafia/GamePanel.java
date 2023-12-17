@@ -16,7 +16,6 @@ public class GamePanel extends JPanel {
   public JLabel member;
   public JLabel time;
   public JLabel jlabel; //직업 표시
-  public JLabel jlabel2; //
   public JLabel roleImageLabel; //역할 사진 표시
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
@@ -26,8 +25,12 @@ public class GamePanel extends JPanel {
     roleImageLabel.setBounds(887, 100, 200, 200);
     this.add(roleImageLabel);
 
+    JLabel chatable = new JLabel("채팅");
+    chatable.setFont(new Font("굴림", Font.PLAIN, 25));
+    chatable.setBounds(20, 530, 73, 53);
+
     chat = new JTextField(30);
-    chat.setBounds(20, 542, 762, 30);
+    chat.setBounds(90, 542, 694, 30);
     chat.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -51,65 +54,12 @@ public class GamePanel extends JPanel {
     this.add(scrollPane);
     chatArea.setEditable(false);
 
-    JLabel[] roleLabels = new JLabel[10];
-
-    // 생존자 사진
-    /*
-    for (int i = 0; i < 2; i++) {
-      roleLabels[i] = createRoleLabel("src/mafia/image/citizen.png", 790 + i * 80, 39);
-      this.add(roleLabels[i]);
-    }
-    */
-    //시민,경찰 사진
-    String[] roles = {"citizen","citizen","police"};
-    for (int i = 0; i < roles.length; i++) {
-      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
-      this.add(roleLabels[i + 2]);
-    }
-
-    // 마피아, 의사 사진
-    String[] roles2 = {"mafia","mafia","doctor"};
-    for (int i = 0; i < roles2.length; i++) {
-      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
-      this.add(roleLabels[i + 2]);
-    }
-
-
-    startBtn = new JButton("시작");
-    startBtn.setBounds(887, 636, 103, 75);
-    startBtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        clientGame.sendMessage(clientGame.name + "/gameStart");
-      }
-    });
-
-    String[] processingTag = clientGame.name.split("#");
-    String tag = processingTag[processingTag.length - 1];
-    if (!tag.equals("1")) {
-      startBtn.setEnabled(false);
-    }
-
     JLabel votelable = new JLabel("투표");
-    votelable.setFont(new Font("굴림", Font.PLAIN, 30));
-    votelable.setBounds(57, 774, 73, 53);
-
-
-    member = new JLabel("참여인원");
-    member.setFont(new Font("굴림", Font.PLAIN, 30));
-    member.setBounds(57, 636, 763, 85);
-
-
-    jlabel = new JLabel("직업");
-    jlabel.setFont(new Font("굴림", Font.PLAIN, 30));
-    jlabel.setBounds(57, 700, 763, 85);
-
-    jlabel2 = new JLabel("직업");
-    jlabel2.setFont(new Font("굴림", Font.PLAIN, 30));
-    jlabel2.setBounds(57, 730, 763, 85);
+    votelable.setFont(new Font("굴림", Font.PLAIN, 25));
+    votelable.setBounds(20, 593, 73, 53);
 
     vote = new JTextField();
-    vote.setBounds(142, 776, 679, 59);
+    vote.setBounds(90, 600, 694, 30);
     vote.setColumns(10);
     vote.addActionListener(new ActionListener() {
       @Override
@@ -164,6 +114,53 @@ public class GamePanel extends JPanel {
       }
     });
 
+    JLabel[] roleLabels = new JLabel[10];
+
+    // 생존자 사진
+    /*
+    for (int i = 0; i < 2; i++) {
+      roleLabels[i] = createRoleLabel("src/mafia/image/citizen.png", 790 + i * 80, 39);
+      this.add(roleLabels[i]);
+    }
+    */
+    //시민,경찰 사진
+    String[] roles = {"citizen","citizen","police"};
+    for (int i = 0; i < roles.length; i++) {
+      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
+      this.add(roleLabels[i + 2]);
+    }
+
+    // 마피아, 의사 사진
+    String[] roles2 = {"mafia","mafia","doctor"};
+    for (int i = 0; i < roles2.length; i++) {
+      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
+      this.add(roleLabels[i + 2]);
+    }
+    member = new JLabel("참여인원");
+    member.setFont(new Font("굴림", Font.PLAIN, 30));
+    member.setBounds(790, 230, 763, 85);
+
+
+    startBtn = new JButton("시작");
+    startBtn.setBounds(887, 636, 103, 75);
+    startBtn.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        clientGame.sendMessage(clientGame.name + "/gameStart");
+      }
+    });
+
+    String[] processingTag = clientGame.name.split("#");
+    String tag = processingTag[processingTag.length - 1];
+    if (!tag.equals("1")) {
+      startBtn.setEnabled(false);
+    }
+
+
+    jlabel = new JLabel("직업");
+    jlabel.setFont(new Font("굴림", Font.PLAIN, 30));
+    jlabel.setBounds(57, 700, 763, 85);
+
     time = new JLabel("30");
     time.setBounds(887, 600, 103, 75);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
@@ -176,6 +173,7 @@ public class GamePanel extends JPanel {
     this.add(chat);
     this.add(scrollPane);
     this.add(votelable);
+    this.add(chatable);
     this.add(member);
     this.add(vote);
     this.add(time);
@@ -201,5 +199,7 @@ public class GamePanel extends JPanel {
 
     return label;
   }
+
+
 
 }

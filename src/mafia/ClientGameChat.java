@@ -92,6 +92,7 @@ public class ClientGameChat extends Thread {
         if (msg[0].equals("job")) {
           clientGame.job = msg[1];
         }
+
       } catch (IOException e) {
         e.printStackTrace();
       }
