@@ -19,9 +19,8 @@ public class GamePanel extends JPanel {
   public JTextField vote;
   public JLabel member;
   public JLabel time;
-  //public JLabel jlabel; //직업 표시
   public JLabel ment; //진행 상황 멘트 표시
-  public JLabel roleImageLabel; //역할 사진 표시
+  public JLabel roleImageLabel; //우측 하단에 역할 사진 표시
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
@@ -139,14 +138,14 @@ public class GamePanel extends JPanel {
       this.add(roleLabels[i]);
     }
     */
-    //시민,경찰 사진
+
+    //배열에 사진명 넣으면 해당 사진이 화면 출력됨
     String[] roles = {"question","question","question"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
       this.add(roleLabels[i + 2]);
     }
 
-    // 마피아, 의사 사진
     String[] roles2 = {"question","question","question"};
     for (int i = 0; i < roles2.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
@@ -182,7 +181,9 @@ public class GamePanel extends JPanel {
     if (!tag.equals("1")) {
       startBtn.setEnabled(false);
     }
+
 /*
+//버튼에 이미지 넣으려고 했는데 오류 투성이라 패스
     final ImageIcon startGameIcon = new ImageIcon("src/mafia/image/gameStart.png");
     Image startGameIconImageImage = startGameIcon.getImage();
     Image newStartImage = startGameIconImageImage.getScaledInstance(188, 39, Image.SCALE_SMOOTH);
@@ -209,20 +210,10 @@ public class GamePanel extends JPanel {
     if (!tag.equals("1")) {
       startGameBtn.setEnabled(false);
     }
-
-
  */
 
-
-
-
-
-    //jlabel = new JLabel("직업");
-    //jlabel.setFont(new Font("굴림", Font.PLAIN, 25));
-    //jlabel.setBounds(20, 700, 763, 85);
-
     time = new JLabel("30");
-    //time.setForeground(Color.YELLOW); //흰색으로 적용됨
+    //time.setForeground(Color.YELLOW); //노란색 적용이 안됨 개빡침
     time.setBounds(150, 680, 80, 45);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
     time.setForeground(Color.WHITE);
@@ -237,7 +228,6 @@ public class GamePanel extends JPanel {
     this.add(member);
     this.add(vote);
     this.add(time);
-    //this.add(jlabel);
 
     setVisible(true);
   }
@@ -247,7 +237,7 @@ public class GamePanel extends JPanel {
     return parts[0];
   }
 
-  //역할 사진 보여주는 함수
+  //오른쪽 상단에 역할 사진 보여주는 함수
   private JLabel createRoleLabel(String imagePath, int x, int y) {
     ImageIcon icon = new ImageIcon(imagePath);
     Image image = icon.getImage();
@@ -259,6 +249,8 @@ public class GamePanel extends JPanel {
 
     return label;
   }
+
+  //오른쪽 하단에 진행 상황 사진 보여주는 함수
   private ImageIcon loadImageIcon(File file, int width, int height) {
     try {
       Image image = new ImageIcon(file.toURI().toURL()).getImage();
