@@ -16,16 +16,25 @@ public class GamePanel extends JPanel {
   public JLabel member;
   public JLabel time;
   public JLabel jlabel; //직업 표시
+  public JLabel ment; //진행 상황 멘트 표시
   public JLabel roleImageLabel; //역할 사진 표시
 
   public GamePanel(JFrame frame, ClientGame clientGame) {
     this.setLayout(null);
+    this.setBackground(new Color(24, 24, 40));
+
+    ment = new JLabel("<html>** 현재 진행 상황 **</html>");
+    ment.setForeground(Color.WHITE);
+    ment.setFont(new Font("굴림", Font.PLAIN, 15));
+    ment.setBounds(800, 500, 500, 200);
+    this.add(ment);
 
     roleImageLabel = new JLabel();
-    roleImageLabel.setBounds(887, 100, 200, 200);
+    roleImageLabel.setBounds(800, 650, 600, 200);
     this.add(roleImageLabel);
 
     JLabel chatable = new JLabel("채팅");
+    chatable.setForeground(Color.WHITE);
     chatable.setFont(new Font("굴림", Font.PLAIN, 25));
     chatable.setBounds(20, 530, 73, 53);
 
@@ -49,6 +58,7 @@ public class GamePanel extends JPanel {
     });
 
     chatArea = new JTextArea(10, 30);
+    chatArea.setBackground(new Color(224, 224, 224));
     scrollPane = new JScrollPane(chatArea);
     scrollPane.setBounds(20, 39, 762, 493);
     this.add(scrollPane);
@@ -56,10 +66,11 @@ public class GamePanel extends JPanel {
 
     JLabel votelable = new JLabel("투표");
     votelable.setFont(new Font("굴림", Font.PLAIN, 25));
+    votelable.setForeground(Color.WHITE);
     votelable.setBounds(20, 593, 73, 53);
 
     vote = new JTextField();
-    vote.setBounds(90, 600, 694, 30);
+    vote.setBounds(90, 608, 694, 30);
     vote.setColumns(10);
     vote.addActionListener(new ActionListener() {
       @Override
@@ -124,25 +135,26 @@ public class GamePanel extends JPanel {
     }
     */
     //시민,경찰 사진
-    String[] roles = {"citizen","citizen","police"};
+    String[] roles = {"question","question","question"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
       this.add(roleLabels[i + 2]);
     }
 
     // 마피아, 의사 사진
-    String[] roles2 = {"mafia","mafia","doctor"};
+    String[] roles2 = {"question","question","question"};
     for (int i = 0; i < roles2.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
       this.add(roleLabels[i + 2]);
     }
     member = new JLabel("참여인원");
+    member.setForeground(Color.WHITE);
     member.setFont(new Font("굴림", Font.PLAIN, 30));
     member.setBounds(790, 230, 763, 85);
 
 
     startBtn = new JButton("시작");
-    startBtn.setBounds(887, 636, 103, 75);
+    startBtn.setBounds(20, 636, 103, 75);
     startBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -158,14 +170,14 @@ public class GamePanel extends JPanel {
 
 
     jlabel = new JLabel("직업");
-    jlabel.setFont(new Font("굴림", Font.PLAIN, 30));
-    jlabel.setBounds(57, 700, 763, 85);
+    jlabel.setFont(new Font("굴림", Font.PLAIN, 25));
+    jlabel.setBounds(20, 700, 763, 85);
 
     time = new JLabel("30");
-    time.setBounds(887, 600, 103, 75);
+    time.setForeground(Color.YELLOW);
+    time.setBounds(100, 650, 103, 75);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
     time.setForeground(Color.WHITE);
-    time.setBackground(Color.black);
     time.setHorizontalAlignment(SwingConstants.CENTER);
     time.setVerticalAlignment(SwingConstants.CENTER);
 
