@@ -84,11 +84,13 @@ public class ClientGameChat extends Thread {
             case "true":
               //게임이 시작되면 시작 버튼 비활성화
               clientGame.gameFlag = true;
+              clientGame.gp.startBtn.setText("ing");
               clientGame.gp.startBtn.setEnabled(false);
               break;
             case "false":
               //게임이 종료되면 게임 플래그 false로 설정
               clientGame.gameFlag = false;
+              clientGame.gp.startBtn.setText("finish");
               break;
           }
         }

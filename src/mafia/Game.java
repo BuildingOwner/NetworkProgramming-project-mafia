@@ -12,7 +12,7 @@ import java.util.Timer;
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"}; //게임 직업 목록
-  private int[] jobCount = {2, 2, 1, 1}; //게임 직업 수
+  private int[] jobCount = {1,1, 1, 1}; //게임 직업 수
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
@@ -261,7 +261,7 @@ public class Game extends Thread {
       notice("citizen win", "chat");
       notice("false", "isGameRun");
       return true;
-    } else if (citizen <= enemy) {
+    } else if (citizen <= enemy) {//시민보다 마피아가 더 많으면 마피아 승리
       gameFlag = false;
       notice("enemy win", "chat");
       notice("false", "isGameRun");

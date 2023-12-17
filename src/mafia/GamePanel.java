@@ -20,6 +20,7 @@ public class GamePanel extends JPanel {
   public JScrollPane scrollPane; //스크롤바 생성
   public JTextArea chatArea; //채팅창
   public JButton startBtn; //시작 버튼
+  public JButton backButton; //뒤로가기 버튼
   public JTextField vote; //투표 입력하는 창
   public JLabel member; //참여 인원
   public JLabel time; //남은 시간
@@ -162,7 +163,7 @@ public class GamePanel extends JPanel {
     member.setBounds(790, 230, 763, 85);
 
     //시작 버튼
-    startBtn = new JButton("시작");
+    startBtn = new JButton("start");
     startBtn.setForeground(Color.WHITE);
     startBtn.setFont(new Font("굴림", Font.PLAIN, 15));
     Color burgundyColor = new Color(119, 27, 35);
@@ -183,6 +184,23 @@ public class GamePanel extends JPanel {
       startBtn.setEnabled(false); //시작 버튼 비활성화
     }
 
+    /*
+    //시작 페이지로 가는 버튼
+    JButton backButton = new JButton("back");
+    backButton.setBounds(20, 730, 80, 45);
+    backButton.setForeground(Color.WHITE);
+    backButton.setFont(new Font("굴림", Font.PLAIN, 15));
+    backButton.setBackground(new Color(119, 27, 35));
+
+    backButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        switchToStartPanel(); //화면 전환하기
+      }
+    });
+     */
+
+    //타이머
     time = new JLabel("30");
     time.setBounds(150, 680, 80, 45);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
@@ -200,6 +218,7 @@ public class GamePanel extends JPanel {
     this.add(time);
     this.add(ment);
     this.add(roleImageLabel);
+    //this.add(backButton);
 
     setVisible(true);
   }
@@ -233,6 +252,17 @@ public class GamePanel extends JPanel {
       return new ImageIcon();
     }
   }
+
+  /*
+  private void switchToStartPanel() { //화면 전환
+    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    frame.getContentPane().remove(this);
+    frame.getContentPane().add(new StartPanel(frame));
+    frame.repaint();
+    frame.revalidate();
+  }
+
+   */
 
 
 }
