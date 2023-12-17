@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +19,7 @@ public class GamePanel extends JPanel {
   public JTextField vote;
   public JLabel member;
   public JLabel time;
-  public JLabel jlabel; //직업 표시
+  //public JLabel jlabel; //직업 표시
   public JLabel ment; //진행 상황 멘트 표시
   public JLabel roleImageLabel; //역할 사진 표시
 
@@ -112,6 +116,7 @@ public class GamePanel extends JPanel {
         }
 
         if (clientGame.now == DayNight.NIGHT) {
+          //clientGame.gp.jlabel2.setText(clientGame.name + "은 마피아!!");
           clientGame.sendMessage(clientGame.name + "/kill/" + s);
         } else if (clientGame.now == DayNight.HEAL) {
           clientGame.sendMessage(clientGame.name + "/heal/" + s);
@@ -152,9 +157,19 @@ public class GamePanel extends JPanel {
     member.setFont(new Font("굴림", Font.PLAIN, 30));
     member.setBounds(790, 230, 763, 85);
 
-
     startBtn = new JButton("시작");
-    startBtn.setBounds(20, 636, 103, 75);
+    startBtn.setForeground(Color.WHITE);
+    startBtn.setFont(new Font("굴림", Font.PLAIN, 15));
+    Color burgundyColor = new Color(119, 27, 35);
+    startBtn.setBackground(burgundyColor);
+    startBtn.setFocusPainted(false);
+    startBtn.setBounds(20, 680, 80, 45);
+
+    ImageIcon startIcon = new ImageIcon("src/mafia/image/start.png");
+    Image startImage = startIcon.getImage().getScaledInstance(80, 75, Image.SCALE_SMOOTH);
+    startIcon = new ImageIcon(startImage);
+    startBtn.setIcon(startIcon);
+
     startBtn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -167,15 +182,48 @@ public class GamePanel extends JPanel {
     if (!tag.equals("1")) {
       startBtn.setEnabled(false);
     }
+/*
+    final ImageIcon startGameIcon = new ImageIcon("src/mafia/image/gameStart.png");
+    Image startGameIconImageImage = startGameIcon.getImage();
+    Image newStartImage = startGameIconImageImage.getScaledInstance(188, 39, Image.SCALE_SMOOTH);
+    startGameIcon.setImage(newStartImage);
+
+    JLabel startGameBtn = new JLabel(startGameIcon);
+    startGameBtn.setBounds(10, 670, 188, 39);
+    this.add(startGameBtn);
+
+    startBtn.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        ImageIcon ingIcon = new ImageIcon("src/mafia/image/진행중.png");
+        Image ingIconImage = ingIcon.getImage();
+        Image newIngImage = ingIconImage.getScaledInstance(startGameIcon.getIconWidth(), startGameIcon.getIconHeight(), Image.SCALE_SMOOTH);
+        ingIcon.setImage(newIngImage);
+        startGameBtn.setIcon(ingIcon);
+        clientGame.sendMessage(clientGame.name + "/gameStart");
+      }
+    });
+
+    String[] processingTag = clientGame.name.split("#");
+    String tag = processingTag[processingTag.length - 1];
+    if (!tag.equals("1")) {
+      startGameBtn.setEnabled(false);
+    }
 
 
-    jlabel = new JLabel("직업");
-    jlabel.setFont(new Font("굴림", Font.PLAIN, 25));
-    jlabel.setBounds(20, 700, 763, 85);
+ */
+
+
+
+
+
+    //jlabel = new JLabel("직업");
+    //jlabel.setFont(new Font("굴림", Font.PLAIN, 25));
+    //jlabel.setBounds(20, 700, 763, 85);
 
     time = new JLabel("30");
-    time.setForeground(Color.YELLOW);
-    time.setBounds(100, 650, 103, 75);
+    //time.setForeground(Color.YELLOW); //흰색으로 적용됨
+    time.setBounds(150, 680, 80, 45);
     time.setFont(new Font("굴림", Font.PLAIN, 30));
     time.setForeground(Color.WHITE);
     time.setHorizontalAlignment(SwingConstants.CENTER);
@@ -189,7 +237,7 @@ public class GamePanel extends JPanel {
     this.add(member);
     this.add(vote);
     this.add(time);
-    this.add(jlabel);
+    //this.add(jlabel);
 
     setVisible(true);
   }
@@ -211,7 +259,16 @@ public class GamePanel extends JPanel {
 
     return label;
   }
-
+  private ImageIcon loadImageIcon(File file, int width, int height) {
+    try {
+      Image image = new ImageIcon(file.toURI().toURL()).getImage();
+      Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+      return new ImageIcon(scaledImage);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return new ImageIcon();
+    }
+  }
 
 
 }

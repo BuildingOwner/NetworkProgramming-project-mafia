@@ -56,6 +56,7 @@ public class Game extends Thread {
       for (int i = 0; i < users.size(); i++) {
         if (mafiaPick.split("#")[0].equals(users.get(i).name.split("#")[0])) {
           notice("간밤에 " + users.get(i).name + "님이 마피아에게 습격당해 죽었습니다.", "chat");
+          notice(users.get(i).name + "님이 사망했습니다", "job");
           noticePersonal(serverThreads.get(i), "", "death");
           users.get(i).isDead = true;
           serverThreads.get(i).isDead = true;
@@ -277,11 +278,13 @@ public class Game extends Thread {
 
   public void notice(String str, String method) {
     StringBuilder names = new StringBuilder();
+    StringBuilder deadNames = new StringBuilder();
     if (method.equals("member")) {
       for (ServerThread s : serverThreads) {
         names.append("[").append(s.name).append("] ");
       }
     }
+
     for (ServerThread s : serverThreads) {
       try {
         if (method.equals("chat")) {

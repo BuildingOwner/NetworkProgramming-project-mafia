@@ -28,10 +28,12 @@ public class ClientGameChat extends Thread {
           clientGame.userNames = nameProcessed.split(" ");
           System.out.println(clientGame.userNames.toString());
         }
-
+/*
         if (msg[0].equals("job")) {
           clientGame.gp.jlabel.setText(new String(msg[1]));
         }
+
+ */
 
 
         if (msg[0].equals("dayNight")) {
