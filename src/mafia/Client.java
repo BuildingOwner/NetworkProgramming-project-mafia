@@ -1,3 +1,7 @@
+/*
+ * Client 클래스
+ * 이 클래스는 마피아 게임의 클라이언트 창을 나타내는 클래스입니다.
+ */
 package mafia;
 
 import javax.swing.*;

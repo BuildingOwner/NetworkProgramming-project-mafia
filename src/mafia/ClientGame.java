@@ -1,3 +1,7 @@
+/*
+ * ClientGame 클래스
+ * 클라이언트의 게임 관련 기능을 담당하는 클래스입니다.
+ */
 package mafia;
 
 import javax.swing.*;

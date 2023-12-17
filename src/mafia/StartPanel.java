@@ -24,7 +24,7 @@ public class StartPanel extends JPanel {
 
     this.add(backgroundLabel);
 
-
+    //사용자 이름 입력
     JLabel nameLabel = new JLabel("이름을 입력해 주세요");
     nameLabel.setFont(new Font("굴림", Font.PLAIN, 30));
     nameLabel.setBounds(230, 405, 306, 59);

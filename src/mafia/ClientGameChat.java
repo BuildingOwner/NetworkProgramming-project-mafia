@@ -1,3 +1,7 @@
+/*
+ * ClientGameChat 클래스
+ * 이 클래스는 클라이언트의 채팅 및 게임 진행 관련 기능을 담당하는 스레드입니다.
+ */
 package mafia;
 
 import javax.swing.*;

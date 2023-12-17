@@ -33,7 +33,7 @@ public class Server {
     ServerSocket ssocket = new ServerSocket(5000);
 
     while (!isStart) {
-      s = ssocket.accept(); //클라이언트 연결 기닫림
+      s = ssocket.accept(); //클라이언트 연결 기다림
 
       is = new DataInputStream(s.getInputStream());
       os = new DataOutputStream(s.getOutputStream());
