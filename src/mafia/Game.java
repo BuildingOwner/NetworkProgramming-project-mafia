@@ -8,7 +8,7 @@ import java.util.Timer;
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"};
-  private int[] jobCount = {1, 1, 1, 1};
+  private int[] jobCount = {2, 2, 1, 1};
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;

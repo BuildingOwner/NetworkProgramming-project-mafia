@@ -140,20 +140,20 @@ public class GamePanel extends JPanel {
     */
 
     //배열에 사진명 넣으면 해당 사진이 화면 출력됨
-    String[] roles = {"question","question","question"};
+    String[] roles = {"citizen","citizen","police"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
       this.add(roleLabels[i + 2]);
     }
 
-    String[] roles2 = {"question","question","question"};
+    String[] roles2 = {"mafia","mafia","doctor"};
     for (int i = 0; i < roles2.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
       this.add(roleLabels[i + 2]);
     }
     member = new JLabel("참여인원");
     member.setForeground(Color.WHITE);
-    member.setFont(new Font("굴림", Font.PLAIN, 30));
+    member.setFont(new Font("굴림", Font.PLAIN, 20));
     member.setBounds(790, 230, 763, 85);
 
     startBtn = new JButton("시작");
