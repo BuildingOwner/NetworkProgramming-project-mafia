@@ -31,7 +31,7 @@ public class ClientGameChat extends Thread {
         //플레이어 이름 처리
         if (msg[0].equals("member")) {
           clientGame.gp.member.setText(new String(msg[1]));
-          String nameProcessed = msg[1].replace("[","").replace("]","");
+          String nameProcessed = msg[1].replace("[", "").replace("]", "");
           clientGame.userNames = nameProcessed.split(" ");
           System.out.println(clientGame.userNames.toString());
         }
