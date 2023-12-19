@@ -10,7 +10,7 @@ public class User {
   public Boolean isDead = false; //생존 여부
   public Boolean enemy = false; //적 판단 여부
 
-  public User(String name, String job){ //생성자 함수
+  public User(String name, String job) { //생성자 함수
     this.name = name;
     this.jab = job;
   }

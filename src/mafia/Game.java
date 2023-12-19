@@ -12,7 +12,7 @@ import java.util.Timer;
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
   private String[] jobs = {"시민", "마피아", "의사", "경찰"}; //게임 직업 목록
-  private int[] jobCount = {1,1, 1, 1}; //게임 직업 수
+  private int[] jobCount = {1, 1, 1, 1}; //게임 직업 수
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
@@ -40,14 +40,14 @@ public class Game extends Thread {
       noticePersonal(s, "개인 : 당신은 " + doctorPick + "님을 살릴겁니다.", "chat");
     }
     if (skill.equals("police")) { //경찰 활동 처리
-      if(policeSkillPoint == 1){
+      if (policeSkillPoint == 1) {
         policeSkillPoint--;
         for (int i = 0; i < users.size(); i++) {
           if (pick.split("#")[0].equals(users.get(i).name.split("#")[0])) {
             noticePersonal(s, "개인 : " + users.get(i).name + "님의 직업은 " + users.get(i).jab + "입니다.", "chat");
           }
         }
-      }else {
+      } else {
         noticePersonal(s, "개인 : 오늘은 이미 조사를 시도해서 더 이상 조사를 할 수 없습니다.", "chat");
       }
     }
@@ -130,7 +130,7 @@ public class Game extends Thread {
       }
     }
 
-    if(duplicationCount>1){
+    if (duplicationCount > 1) {
       notice("최다 득표 인물이 2명 이상입니다. 다시 투표해 주세요", "chat");
       dayNight = DayNight.DAY;
       return false;

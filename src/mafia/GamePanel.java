@@ -93,14 +93,14 @@ public class GamePanel extends JPanel {
         boolean nameCheck = false;
 
         List<String> registeredNames = new ArrayList<>(); //등록된 플레이어 이름을 확인하기 위한 리스트
-        for(String name : clientGame.userNames){ //등록된 플레이어들의 이름을 리스트에 추가하고, 동시에 입력된 이름이 올바른지 체크하는 코드
+        for (String name : clientGame.userNames) { //등록된 플레이어들의 이름을 리스트에 추가하고, 동시에 입력된 이름이 올바른지 체크하는 코드
           registeredNames.add(name.split("#")[0]);
-          if(strs.length>1){
-            if(s.equals(name)){
+          if (strs.length > 1) {
+            if (s.equals(name)) {
               nameCheck = true;
             }
-          }else {
-            if(strs[0].equals(name.split("#")[0])){
+          } else {
+            if (strs[0].equals(name.split("#")[0])) {
               nameCheck = true;
             }
           }
@@ -108,12 +108,12 @@ public class GamePanel extends JPanel {
 
         //이름이 중복된 경우 예외 처리
         int count = 0;
-        for(String rn : registeredNames){
-          if(strs.length<2){
-            if(strs[0].equals(rn)){
+        for (String rn : registeredNames) {
+          if (strs.length < 2) {
+            if (strs[0].equals(rn)) {
               count++;
             }
-            if(count>1){
+            if (count > 1) {
               nameCheck = false;
               break;
             }
@@ -121,7 +121,7 @@ public class GamePanel extends JPanel {
         }
 
         //올바른 이름이 입력되지 않았을 경우 오류창 띄우게 예외 처리
-        if(!nameCheck){
+        if (!nameCheck) {
           JOptionPane.showMessageDialog(frame, "정확한 이름을 입력하세요.\n ex)(이름) or (이름)#(숫자)", "오류", JOptionPane.ERROR_MESSAGE);
           return;
         }
@@ -143,15 +143,15 @@ public class GamePanel extends JPanel {
     JLabel[] roleLabels = new JLabel[10]; //10개 배열 생성
 
     //배열에 사진명 넣으면 해당 사진이 화면 출력됨
-    String[] roles = {"citizen","citizen","police"};
+    String[] roles = {"citizen", "police"};
     for (int i = 0; i < roles.length; i++) {
       roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles[i] + ".png", 790 + i * 150, 39);
       this.add(roleLabels[i + 2]);
     }
 
-    String[] roles2 = {"mafia","mafia","doctor"};
+    String[] roles2 = {"mafia", "doctor"};
     for (int i = 0; i < roles2.length; i++) {
-      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i* 150, 300);
+      roleLabels[i + 2] = createRoleLabel("src/mafia/image/" + roles2[i] + ".png", 790 + i * 150, 230);
       this.add(roleLabels[i + 2]);
     }
 
@@ -159,7 +159,7 @@ public class GamePanel extends JPanel {
     member = new JLabel("참여인원");
     member.setForeground(Color.WHITE);
     member.setFont(new Font("굴림", Font.PLAIN, 20));
-    member.setBounds(790, 230, 763, 85);
+    member.setBounds(790, 450, 763, 85);
 
     //시작 버튼
     startBtn = new JButton("start");

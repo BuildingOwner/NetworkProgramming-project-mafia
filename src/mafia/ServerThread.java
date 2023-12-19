@@ -88,7 +88,7 @@ class ServerThread extends Thread {
         }
 
         //경찰 조사 메시지 처리
-        if (msg[1].equals("police")){
+        if (msg[1].equals("police")) {
           Server.game.skillPick(msg[2], "police", this);
         }
 
