@@ -1,3 +1,7 @@
+/*
+ * StartPanel 클래스
+ * 이 클래스는 게임 시작 화면을 나타내는 패널입니다.
+ */
 package mafia;
 
 import javax.swing.*;
@@ -20,7 +24,7 @@ public class StartPanel extends JPanel {
 
     this.add(backgroundLabel);
 
-
+    //사용자 이름 입력
     JLabel nameLabel = new JLabel("이름을 입력해 주세요");
     nameLabel.setFont(new Font("굴림", Font.PLAIN, 30));
     nameLabel.setBounds(230, 405, 306, 59);
@@ -134,4 +138,3 @@ public class StartPanel extends JPanel {
 
 
 }
-

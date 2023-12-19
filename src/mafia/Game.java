@@ -1,20 +1,26 @@
+/*
+ * Game 클래스
+ * 이 클래스는 마피아 게임의 핵심 로직을 담당하며, 게임 진행, 유저 직업 초기화, 투표, 죽음 처리 등을 관리합니다.
+ */
 package mafia;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.Timer;
 
 public class Game extends Thread {
   private ArrayList<ServerThread> serverThreads;
-  private String[] jobs = {"시민", "마피아", "의사", "경찰"}; //역할 추가 H
-  private int[] jobCount = {1, 1, 1, 1}; //5개 H
+  private String[] jobs = {"시민", "마피아", "의사", "경찰"}; //게임 직업 목록
+  private int[] jobCount = {1,1, 1, 1}; //게임 직업 수
   private List<User> users = new ArrayList<>();
   DayNight dayNight = DayNight.HEAL;
   private Boolean gameFlag = true;
-  private String[] voteName;
-  private int[] voteCount;
-  private String mafiaPick = "";
-  private String doctorPick = " ";
-  private int policeSkillPoint = 1;
+  private String[] voteName; //튜표한 유저 이름 목록
+  private int[] voteCount; //투표 득표 수
+  private String mafiaPick = ""; //마피아가 선택한 대상
+  private String doctorPick = " "; //의사가 선택한 대상
+  private int policeSkillPoint = 1; //경찰 스킬 사용 횟수 -> 한 사람의 역할만 알 수 있도록 함
 
   public Game(ArrayList<ServerThread> list) {
     this.serverThreads = list;
@@ -25,15 +31,15 @@ public class Game extends Thread {
     if (pick == null || pick.isEmpty()) {
       return;
     }
-    if (skill.equals("kill")) {
+    if (skill.equals("kill")) { //마피아 활동 처리
       mafiaPick = pick;
       noticePersonal(s, "개인 : 당신은 " + mafiaPick + "님을 죽일겁니다.", "chat");
     }
-    if (skill.equals("heal")) {
+    if (skill.equals("heal")) { //의사 활동 처리
       doctorPick = pick;
       noticePersonal(s, "개인 : 당신은 " + doctorPick + "님을 살릴겁니다.", "chat");
     }
-    if (skill.equals("police")) {
+    if (skill.equals("police")) { //경찰 활동 처리
       if(policeSkillPoint == 1){
         policeSkillPoint--;
         for (int i = 0; i < users.size(); i++) {
@@ -47,13 +53,14 @@ public class Game extends Thread {
     }
   }
 
-  public void killProcessing() {
+  public void killProcessing() { //마피아 처리 메서드
     if (mafiaPick.split("#")[0].equals(doctorPick.split("#")[0])) {
       notice("의사가 치료에 성공했습니다.", "chat");
     } else {
       for (int i = 0; i < users.size(); i++) {
         if (mafiaPick.split("#")[0].equals(users.get(i).name.split("#")[0])) {
           notice("간밤에 " + users.get(i).name + "님이 마피아에게 습격당해 죽었습니다.", "chat");
+          notice(users.get(i).name + "님이 사망했습니다", "job");
           noticePersonal(serverThreads.get(i), "", "death");
           users.get(i).isDead = true;
           serverThreads.get(i).isDead = true;
@@ -65,7 +72,7 @@ public class Game extends Thread {
   }
 
 
-  public void voting(String voter, String pick) {
+  public void voting(String voter, String pick) { //투표 메서드
     int index = 9999;
     for (int i = 0; i < users.size(); i++) {
       if (users.get(i).name.equals(voter)) {
@@ -80,6 +87,7 @@ public class Game extends Thread {
     System.out.println(Arrays.toString(voteName));
   }
 
+  //투표로 사망한 플레이어 처리 메서드
   public Boolean voteKill() {
     boolean isEmpty = true;
 
@@ -142,6 +150,7 @@ public class Game extends Thread {
     return true;
   }
 
+  //각 플레이어들에게 랜덤으로 직업을 할당
   public void init() {
     Random rand = new Random();
     for (int i = 0; i < serverThreads.size(); i++) {
@@ -153,6 +162,7 @@ public class Game extends Thread {
       jobCount[num]--;
       User u = new User(serverThreads.get(i).name, jobs[num]);
       users.add(u);
+      //각 플레이어 개인 채팅으로 직업 정보를 전달
       noticePersonal(serverThreads.get(i), "개인 : 당신의 직업은 " + u.jab + "입니다.", "chat");
       noticePersonal(serverThreads.get(i), u.jab, "job");
     }
@@ -185,6 +195,7 @@ public class Game extends Thread {
               notice("vote", "dayNight");
               break;
             case VOTE:
+              //투표 처리 후 게임이 종료되지 않았다면 다음 단계인 'NIGHT'로 이동
               if (voteKill() && !checkFinish()) {
                 dayNight = DayNight.NIGHT;
                 notice("now Night", "chat");
@@ -203,6 +214,7 @@ public class Game extends Thread {
               notice("heal", "dayNight");
               break;
             case HEAL:
+              //밤 동안의 사건 처리 후 게임이 종료되지 않았다면 다음 단계인 'DAY'로 이동
               killProcessing();
               if (!checkFinish()) {
                 dayNight = DayNight.DAY;
@@ -213,7 +225,7 @@ public class Game extends Thread {
           }
         }
       }
-    }, 0, 20000);
+    }, 0, 20000); //주기 20초
 
 
     final int[] leftTime = {20};
@@ -222,16 +234,16 @@ public class Game extends Thread {
       public void run() {
         if (gameFlag) {
           notice(String.valueOf(leftTime[0]--), "leftTime");
-          if (leftTime[0] <= 0) {
+          if (leftTime[0] <= 0) { //남은 시간이 0초 이하면 20초로 초기화
             leftTime[0] = 20;
           }
         }
       }
-    }, 0, 1000);
+    }, 0, 1000); //주기 1초
 
   }
 
-  private Boolean checkFinish() {
+  private Boolean checkFinish() { //끝났는지 확인하는 메서드
     int citizen = 0;
     int enemy = 0;
     for (User u : users) {
@@ -244,12 +256,12 @@ public class Game extends Thread {
       }
     }
 
-    if (enemy == 0) {
+    if (enemy == 0) { //마피아가 다 죽었으면 시민 승리
       gameFlag = false;
       notice("citizen win", "chat");
       notice("false", "isGameRun");
       return true;
-    } else if (citizen <= enemy) {
+    } else if (citizen <= enemy) {//시민보다 마피아가 더 많으면 마피아 승리
       gameFlag = false;
       notice("enemy win", "chat");
       notice("false", "isGameRun");
@@ -261,13 +273,17 @@ public class Game extends Thread {
 
   public void notice(String str, String method) {
     StringBuilder names = new StringBuilder();
+    StringBuilder deadNames = new StringBuilder();
+    //method가 "member"인 경우 클라이언트들의 이름 목록을 생성 -> 참여인원에 출력하기 위함
     if (method.equals("member")) {
       for (ServerThread s : serverThreads) {
         names.append("[").append(s.name).append("] ");
       }
     }
+
+    //모든 클라이언트들에게 메시지 전달
     for (ServerThread s : serverThreads) {
-      try {
+      try { //method에 따라 다른 형식으로 메시지 전송
         if (method.equals("chat")) {
           s.os.writeUTF("chat/전체 : " + str);
         }
@@ -293,6 +309,7 @@ public class Game extends Thread {
     }
   }
 
+  //플레이어 개인 채팅으로 전달하는 정보
   private void noticePersonal(ServerThread s, String str, String method) {
     try {
       if (method.equals("chat")) {
@@ -312,4 +329,3 @@ public class Game extends Thread {
   }
 
 }
-
