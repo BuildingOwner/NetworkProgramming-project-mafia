@@ -107,7 +107,7 @@ public class Game extends Thread {
 
     for (int i = 0; i < voteName.length; i++) {
       for (int j = 0; j < users.size(); j++) {
-        if (voteName[i].split("#")[0].equals(users.get(j).name.split("#")[0])) {
+        if (voteName[i].equals(users.get(j).name.split("#")[0]) || voteName[i].equals(users.get(j).name)) {
           voteCount[j]++;
         }
       }
@@ -132,7 +132,10 @@ public class Game extends Thread {
 
     if (duplicationCount > 1) {
       notice("최다 득표 인물이 2명 이상입니다. 다시 투표해 주세요", "chat");
-      dayNight = DayNight.DAY;
+      for (int i = 0; i < users.size(); i++) {
+        voteCount[i] = 0;
+        voteName[i] = "";
+      }
       return false;
     }
 
@@ -225,17 +228,17 @@ public class Game extends Thread {
           }
         }
       }
-    }, 0, 20000); //주기 20초
+    }, 0, 10000); //주기 20초
 
 
-    final int[] leftTime = {20};
+    final int[] leftTime = {10};
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
         if (gameFlag) {
           notice(String.valueOf(leftTime[0]--), "leftTime");
           if (leftTime[0] <= 0) { //남은 시간이 0초 이하면 20초로 초기화
-            leftTime[0] = 20;
+            leftTime[0] = 10;
           }
         }
       }
